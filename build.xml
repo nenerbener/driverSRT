@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+
+<project name="${name}" default="compile">
+
+  <!-- Load all the default properties, and any the user wants    -->
+  <!-- to contribute (without having to type -D or edit this file -->
+  <property file="${basedir}/default.properties" />
+
+  <!-- the normal classpath -->
+  <path id="classpath">
+    <pathelement location="${build.dir}"/>
+    <fileset dir="${build.dir}">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <presetdef name="javac">
+    <javac includeantruntime="false" />
+  </presetdef>
+
+  <!-- ====================================================== -->
+  <!-- Stuff needed by all targets                            -->
+  <!-- ====================================================== -->
+  <target name="init" depends="clean" description="--> stuff required by all targets">
+    <mkdir dir="${build.dir}"/>
+	<mkdir dir="${build.dir}/META-INF"/>
+
+    <copy todir="${build.dir}" verbose="true">
+      <fileset dir="${src.dir}" includes="*.*"/>
+    </copy>
+    <copy todir="${build.dir}" verbose="true">
+      <fileset dir="${lib.dir}" includes="*.jar"/>
+    </copy>
+	<copy todir="${build.dir}/META-INF" verbose="true">
+  	  <fileset dir="${src.dir}" includes="MANIFEST.MF"/>
+    </copy>
+	<delete file="${build.dir}/MANIFEST.MF"/>
+  </target>
+
+  <!-- target: clean-build  ============================================= -->
+  <target name="clean" description="--> clean the project built files">
+    <delete includeemptydirs="true" dir="${build.dir}"/>
+	<delete file="${basedir}/${final.name}.jar"/>
+  </target>
+
+  <!-- ====================================================== -->
+  <!-- Compile the Java files                                 -->
+  <!-- ====================================================== -->
+  <target name="compile" depends="init" description="--> compile Java files">
+    <javac
+     encoding="${build.encoding}"
+     srcdir="${src.dir}"
+     includes="*.java"
+     destdir="${build.dir}"
+     debug="${javac.debug}"
+     optimize="${javac.optimize}"
+     target="${javac.version}"
+     source="${javac.version}"
+     deprecation="${javac.deprecation}">
+      <compilerarg value="-Xlint:-path"/>
+      <classpath refid="classpath"/>
+    </javac>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Make googleSRT.jar                                                 -->
+  <!-- ================================================================== -->
+  <target name="jar" depends="compile" description="--> make Google2SRT.jar">
+	<jar jarfile="${final.name}.jar"
+         basedir="${build.dir}"
+		 manifest="${build.dir}/META-INF/MANIFEST.MF">
+    </jar>
+  </target>
+
+</project>
+
