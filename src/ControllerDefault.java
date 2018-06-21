@@ -35,12 +35,12 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 
-public class Controller {
+public class ControllerDefault {
 
     private List<Video> videos;                             // List of videos
     ResourceBundle bundle;
     private Settings appSettings; 	// Application settings
-    private GUI gui;                                        // GUI
+//    private GUI gui;                                        // GUI
     private List<List<NetSubtitle>> lSubsWithTranslations;  // Tracks (item 0) + Targets (item 1)
 
     protected void addTracks(List<NetSubtitle> subtitles) {
@@ -59,13 +59,13 @@ public class Controller {
         return lSubsWithTranslations.get(1);
     }
     
-    protected GUI getGUI() {
-        return gui;
-    }
+//    protected GUI getGUI() {
+//        return gui;
+//    }
     
-    public Controller(GUI gui, Settings settings) {
+//    public ControllerDefault(GUI gui, Settings settings) {
+    public ControllerDefault(Settings settings) {
         this.appSettings = settings;
-        this.gui = gui;
         
         initSubtitlesDataStructure();
         
@@ -107,7 +107,7 @@ public class Controller {
         int videoCount, videoTotalCount;
         
         initSubtitlesDataStructure();
-        videoTotalCount = this.videos.size();//
+        videoTotalCount = this.videos.size();
         
         invalidVideos = new ArrayList<Video>();
 
@@ -122,75 +122,75 @@ public class Controller {
        // Check if URL is valid
         for (Video v : this.videos) {
             try {
-                gui.appStatusConnecting(++videoCount, videoTotalCount);
+//                gui.appStatusConnecting(++videoCount, videoTotalCount);
                 al = v.getSubtitlesWithTranslations();
                 addTracks(al.get(0)); // lSubsWithTranslations.get(0).addAll(al.get(0));
                 if (getTargets().isEmpty()) // Only add targets of the *first video with targets* - technically wrong, it makes sense in practice
                     addTargets(al.get(1)); // lSubsWithTranslations.get(1).addAll(al.get(1));
-                gui.appStatusClear();
+//                gui.appStatusClear();
             } catch (Video.HostNoGV e) {
-                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.unknown.host");
-                else gui.appLogsBundleMessage("msg.url.unknown.host", v.getURL());
+//                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.unknown.host");
+//                else gui.appLogsBundleMessage("msg.url.unknown.host", v.getURL());
                 invalidVideos.add(v);
                 continue;
             } catch (Video.NoDocId e) {
-                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.parameter.docid.not.found");
-                else gui.appLogsBundleMessage("msg.url.parameter.docid.not.found", v.getURL());
+//                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.parameter.docid.not.found");
+//                else gui.appLogsBundleMessage("msg.url.parameter.docid.not.found", v.getURL());
                 invalidVideos.add(v);
                 continue;
             } catch (Video.NoQuery e) {
-                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.parameter.not.found");
-                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
+//                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.parameter.not.found");
+//                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
                 invalidVideos.add(v);
                 continue;
             } catch (Video.InvalidDocId e) {
-                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.parameter.docid.invalid");
-                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
+//                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.parameter.docid.invalid");
+//                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
                 invalidVideos.add(v);
                 continue;
             } catch (Video.NoSubs e) {
-                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.infile.no.subtitles.found");
-                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
+//                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.infile.no.subtitles.found");
+//                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
                 invalidVideos.add(v);
                 continue;
             } catch (MalformedURLException e) {
-                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.invalid.format");
-                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
+//                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.invalid.format");
+//                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
                 invalidVideos.add(v);
                 continue;
             } catch (org.jdom.input.JDOMParseException e) {
-                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.unexpected.format");
-                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
+//                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.unexpected.format");
+//                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
                 invalidVideos.add(v);
                 continue;
             } catch (java.net.UnknownHostException e) {
-                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.net.unknown.host");
-                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
+//                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.net.unknown.host");
+//                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
                 invalidVideos.add(v);
                 continue;
             } catch (FileNotFoundException e) {
-                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.does.not.exist");
-                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
+//                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.does.not.exist");
+//                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
                 invalidVideos.add(v);
                 continue;
             } catch (Video.NoYouTubeParamV e) {
-                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.net.missing.video.param");
-                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
+//                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.net.missing.video.param");
+//                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
                 invalidVideos.add(v);
                 continue;
             } catch (SocketException e) {
-                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.net.socket.exception");
-                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
+//                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.net.socket.exception");
+//                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
                 invalidVideos.add(v);
                 continue;
             } catch (Exception e) {
-                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.unknown.error");
-                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
+//                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.unknown.error");
+//                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
                 invalidVideos.add(v);
                 continue;
             }
 
-            gui.tmSubtitlesLists_populate();
+//            gui.tmSubtitlesLists_populate();
 
         }
         
@@ -198,21 +198,21 @@ public class Controller {
         for (Video v : invalidVideos)
             this.videos.remove(v);
         
-        gui.prepareNewConversion();
+//        gui.prepareNewConversion();
 
     }
     
     // Converts an XML file to SRT
     protected void convertSubtitlesXML() {
         String fileName;
-        Converter conv;
+        ConverterDefault conv;
         InputStreamReader isr = null;
        
         try {
             isr = new InputStreamReader(new FileInputStream(appSettings.getFileInput()), "UTF-8");
         } catch (FileNotFoundException ex) {
-            gui.setMsgIOException();
-            gui.prepareNewConversion();
+//            gui.setMsgIOException();
+//            gui.prepareNewConversion();
             return;
         } catch (java.io.UnsupportedEncodingException ex) {
             if (Settings.DEBUG) System.out.println("(DEBUG) encoding not supported");
@@ -220,20 +220,19 @@ public class Controller {
         
         fileName = Common.removeExtension((new File(appSettings.getFileInput())).getName()) + ".srt";
 
-        conv = new Converter(
-                gui,
-                isr,
-                Common.returnDirectory(appSettings.getOutput()) + fileName,
-                gui.getDelay(),
-                appSettings.getRemoveTimingSubtitles());
+        conv = new ConverterDefault(
+        		isr,
+        		Common.returnDirectory(appSettings.getOutput()) + fileName,
+        		(double) 0, // experiment
+        		appSettings.getRemoveTimingSubtitles());
         conv.run();
-        gui.prepareNewConversion();
-        gui.appErrorBundleMessage("msg.conversion.finished");
+//        gui.prepareNewConversion();
+//        gui.appErrorBundleMessage("msg.conversion.finished");
     }
     
     // Downloads multiple tracks from the network and converts them to SRT
     protected void convertSubtitlesTracks() {
-        Converter conv;
+        ConverterDefault conv;
         Video v;
 
         Object dataTracks[][];
@@ -244,16 +243,18 @@ public class Controller {
         
         InputStreamReader isr;
         
-        dataTracks = gui.getTableModelTracksData();
+//        dataTracks = gui.getTableModelTracksData();
         lTracks = this.getTracks();
 
-        selectedCountTotalSubtitles = gui.tmSubtitlesLists_getNumberSelectedTracks();
+//        selectedCountTotalSubtitles = gui.tmSubtitlesLists_getNumberSelectedTracks();
+        selectedCountTotalSubtitles = 1;
 
         // For each selected track: convert it to SRT
-        for (i = 0, selectedCountTracks = 0; i < dataTracks.length; i++) {
-            if (((Boolean) dataTracks[i][0]).booleanValue()) {
+        for (i = 0, selectedCountTracks = 0; i < 1; i++) {
+            if (true) {
+//            if (((Boolean) dataTracks[i][0]).booleanValue()) {
 
-                gui.appStatusConverting(selectedCountTracks+1, selectedCountTotalSubtitles);
+//                gui.appStatusConverting(selectedCountTracks+1, selectedCountTotalSubtitles);
 
                 v = getTracks().get(i).getVideo();
 
@@ -292,8 +293,8 @@ public class Controller {
                                     lTracks.get(i).getName()));
                         }
                         fewSubsSkipped = true;
-                        if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
-                        else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTracks.get(i).getLang() + "," + lTracks.get(i).getIdXML() + "]");
+//                        if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
+//                        else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTracks.get(i).getLang() + "," + lTracks.get(i).getIdXML() + "]");
                         continue;
                     } else if (lTracks.get(i).getType() == NetSubtitle.Tipus.YouTubeTrack)
                     {
@@ -319,8 +320,8 @@ public class Controller {
                                         ex2.getMessage()));
                             }
                             fewSubsSkipped = true;
-                            if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
-                            else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTracks.get(i).getLang() + "," + lTracks.get(i).getIdXML() + "]");
+//                            if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
+//                            else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTracks.get(i).getLang() + "," + lTracks.get(i).getIdXML() + "]");
                             continue;
                         }
                     } else 
@@ -329,8 +330,8 @@ public class Controller {
                         // Google Track should not reach this point.
                         if (Settings.DEBUG) System.out.println("(DEBUG) Entered wrong section of code. Unexpected result.");
                         fewSubsSkipped = true;                        
-                        if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
-                        else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTracks.get(i).getLang() + "," + lTracks.get(i).getIdXML() + "]");
+//                        if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
+//                        else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTracks.get(i).getLang() + "," + lTracks.get(i).getIdXML() + "]");
                         continue;
                     }
                 }
@@ -358,11 +359,10 @@ public class Controller {
                 fileName += ".srt";
 
 
-                conv = new Converter(
-                    gui,
+                conv = new ConverterDefault(
                     isr,
                     Common.returnDirectory(appSettings.getOutput()) + fileName,
-                    gui.getDelay(),
+                    (double) 0,
                     appSettings.getRemoveTimingSubtitles());
                 
                 if (!conv.run()) 
@@ -397,11 +397,10 @@ public class Controller {
                             continue;
                         }
 
-                        conv = new Converter(
-                            gui,
+                        conv = new ConverterDefault(
                             isr,
                             Common.returnDirectory(appSettings.getOutput()) + fileName, //Common.removeExtension(appSettings.getOutput()) + fileName, // jtfOutput.getText()
-                            gui.getDelay(),
+                            (double) 0,
                             appSettings.getRemoveTimingSubtitles());
 
                         conv.run();
@@ -411,17 +410,17 @@ public class Controller {
             }
         }
 
-        gui.prepareNewConversion();
+//        gui.prepareNewConversion();
         if (selectedCountTotalSubtitles == 0) { // there is no selection
-            gui.appErrorBundleMessage("msg.sublist.none.selected");
+//            gui.appErrorBundleMessage("msg.sublist.none.selected");
         } else { // there is selection and the process ended (either successfully or not)
-            if (! fewSubsSkipped) gui.appErrorBundleMessage("msg.conversion.finished");
+//            if (! fewSubsSkipped) gui.appErrorBundleMessage("msg.conversion.finished");
         }
     }
 
     // Downloads multiple targets (translated tracks) from the network and converts them to SRT
     protected void convertSubtitlesTargets() {
-        Converter conv;
+        ConverterDefault conv;
         Video v;
         
         Object dataTracks[][], dataTargets[][];
@@ -436,26 +435,31 @@ public class Controller {
         
         NetSubtitle srcLang;
         
-        dataTracks = gui.getTableModelTracksData();
-        dataTargets = gui.getTableModelTargetsData();
+//        dataTracks = gui.getTableModelTracksData();
+//        dataTargets = gui.getTableModelTargetsData();
         lTracks = getTracks();
         lTargets = getTargets();
 
-        selectedCountTotalTracks = gui.tmSubtitlesLists_getNumberSelectedTracks();
-        selectedCountTotalTargets = gui.tmSubtitlesLists_getNumberSelectedTargets();
+//        selectedCountTotalTracks = gui.tmSubtitlesLists_getNumberSelectedTracks();
+//        selectedCountTotalTargets = gui.tmSubtitlesLists_getNumberSelectedTargets();
+        selectedCountTotalTracks = 1;
+        selectedCountTotalTargets = 0;
         selectedCountTotalSubtitles = selectedCountTotalTracks * selectedCountTotalTargets;
         
         // For each selected track
-        for (i = 0, selectedCountTracks = 0; i < dataTracks.length; i++) {
-            if (((Boolean) dataTracks[i][0]).booleanValue()) {
+//        for (i = 0, selectedCountTracks = 0; i < dataTracks.length; i++) {
+        for (i = 0, selectedCountTracks = 0; i < 1; i++) {
+//            if (((Boolean) dataTracks[i][0]).booleanValue()) {
+            if (true) {
                 srcLang = lTracks.get(i);
                 v = srcLang.getVideo();
 
                 // For each selected target
-                for (j = 0, selectedCountTargets = 0; j < dataTargets.length; j++) {
-                    if (((Boolean) dataTargets[j][0]).booleanValue()) {
+//                for (j = 0, selectedCountTargets = 0; j < dataTargets.length; j++) {
+                for (j = 0, selectedCountTargets = 0; j < 0; j++) {
+                    if (true) {
                         
-                        gui.appStatusConverting(selectedCountTracks * selectedCountTotalTargets + selectedCountTargets + 1, selectedCountTotalSubtitles);
+//                        gui.appStatusConverting(selectedCountTracks * selectedCountTotalTargets + selectedCountTargets + 1, selectedCountTotalSubtitles);
                         
                         // If the source is an ASR track and we cannot use Signature method, operation must be completely aborted
                         if (srcLang.getType() == NetSubtitle.Tipus.YouTubeASRTrack && v.getMagicURL().isEmpty()) {
@@ -472,8 +476,8 @@ public class Controller {
                             }
                             
                             // gui.prepareNewConversion();
-                            if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.asr.unreadable");
-                            else gui.appLogsBundleMessage("msg.io.asr.unreadable", "[" + v.getId() + "," + srcLang.getLang() + "," + srcLang.getIdXML() + "]");
+//                            if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.asr.unreadable");
+//                            else gui.appLogsBundleMessage("msg.io.asr.unreadable", "[" + v.getId() + "," + srcLang.getLang() + "," + srcLang.getIdXML() + "]");
                             
                             break; // ASR as source and no ASR available: ALL targets from this ASR must be ABORTED
                         }
@@ -515,8 +519,8 @@ public class Controller {
                                             lTargets.get(j).getName()));
                                 }
                                 fewSubsSkipped = true;
-                                if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
-                                else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTargets.get(j).getLang() + "," + lTargets.get(j).getIdXML() + "]");
+//                                if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
+//                                else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTargets.get(j).getLang() + "," + lTargets.get(j).getIdXML() + "]");
                                 continue;
                             } else if (srcLang.getType() == NetSubtitle.Tipus.YouTubeTrack)
                             {
@@ -542,8 +546,8 @@ public class Controller {
                                                 ex2.getMessage()));
                                     }
                                     fewSubsSkipped = true;
-                                    if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
-                                    else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTargets.get(j).getLang() + "," + lTargets.get(j).getIdXML() + "]");
+//                                    if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
+//                                    else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTargets.get(j).getLang() + "," + lTargets.get(j).getIdXML() + "]");
                                     continue;
                                 }
                             } else
@@ -552,8 +556,8 @@ public class Controller {
                                 // Google Track should not reach this point.
                                 if (Settings.DEBUG) System.out.println("(DEBUG) Entered wrong section of code. Unexpected result.");
                                 fewSubsSkipped = true;
-                                if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
-                                else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTargets.get(j).getLang() + "," + lTargets.get(j).getIdXML() + "]");
+//                                if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
+//                                else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTargets.get(j).getLang() + "," + lTargets.get(j).getIdXML() + "]");
                                 continue;
                             }
                         }
@@ -587,11 +591,10 @@ public class Controller {
 
                         fileName += ".srt";
 
-                        conv = new Converter(
-                            gui,
+                        conv = new ConverterDefault(
                             isr,
                             Common.returnDirectory(appSettings.getOutput()) + fileName, //Common.removeExtension(appSettings.getOutput()) + fileName, // jtfOutput.getText()
-                            gui.getDelay(),
+                            (double) 0,
                             appSettings.getRemoveTimingSubtitles());
                         
                         if (!conv.run())
@@ -623,16 +626,15 @@ public class Controller {
                                                 ex1.getMessage()));
                                     }
                                     fewSubsSkipped = true;
-                                    if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
-                                    else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTargets.get(j).getLang() + "," + lTargets.get(j).getIdXML() + "]");
+//                                    if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
+//                                    else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTargets.get(j).getLang() + "," + lTargets.get(j).getIdXML() + "]");
                                     continue;
                                 }
 
-                                conv = new Converter(
-                                    gui,
+                                conv = new ConverterDefault(
                                     isr,
                                     Common.returnDirectory(appSettings.getOutput()) + fileName, //Common.removeExtension(appSettings.getOutput()) + fileName, // jtfOutput.getText()
-                                    gui.getDelay(),
+                                    (double) 0,
                                     appSettings.getRemoveTimingSubtitles());
 
                                 conv.run();
@@ -645,11 +647,11 @@ public class Controller {
             }
         }
 
-        gui.prepareNewConversion();
+//        gui.prepareNewConversion();
         if (selectedCountTotalTracks == 0) { // there is no selection
-            gui.appErrorBundleMessage("msg.sublist.none.selected");
+//            gui.appErrorBundleMessage("msg.sublist.none.selected");
         } else { // there is selection and the process ended (successfully or not)
-            if (!fewSubsSkipped) gui.appErrorBundleMessage("msg.conversion.finished");
+//            if (!fewSubsSkipped) gui.appErrorBundleMessage("msg.conversion.finished");
         }
     }
     
@@ -807,7 +809,7 @@ public class Controller {
 
     // Downloads multiple tracks from the network and converts them to SRT
     protected void convertDefaultSubtitleTrack() {
-        Converter conv;
+        ConverterDefault conv;
         Video v;
 
         Object dataTracks[][];
@@ -818,14 +820,15 @@ public class Controller {
         
         InputStreamReader isr;
         
-        dataTracks = gui.getTableModelTracksData();
+//        dataTracks = gui.getTableModelTracksData();
         lTracks = this.getTracks();
 
         selectedCountTotalSubtitles = 1;  //set to first track which I hope is the best Closed Caption option
 
         // For each selected track: convert it to SRT
-        for (i = 0, selectedCountTracks = 0; i < dataTracks.length; i++) {
-            if (((Boolean) dataTracks[i][0]).booleanValue()) {
+        for (i = 0, selectedCountTracks = 0; i < 1; i++) {
+//            if (((Boolean) dataTracks[i][0]).booleanValue()) {
+            if (true) {
 
 //                gui.appStatusConverting(selectedCountTracks+1, selectedCountTotalSubtitles);
 
@@ -932,11 +935,10 @@ public class Controller {
                 fileName += ".srt";
 
 
-                conv = new Converter(
-                    gui,
+                conv = new ConverterDefault(
                     isr,
                     Common.returnDirectory(appSettings.getOutput()) + fileName,
-                    gui.getDelay(),
+                    (double) 0,
                     appSettings.getRemoveTimingSubtitles());
                 
                 if (!conv.run()) 
@@ -971,11 +973,10 @@ public class Controller {
                             continue;
                         }
 
-                        conv = new Converter(
-                            gui,
+                        conv = new ConverterDefault(
                             isr,
                             Common.returnDirectory(appSettings.getOutput()) + fileName, //Common.removeExtension(appSettings.getOutput()) + fileName, // jtfOutput.getText()
-                            gui.getDelay(),
+                            (double) 0,
                             appSettings.getRemoveTimingSubtitles());
 
                         conv.run();
@@ -985,11 +986,11 @@ public class Controller {
             }
         }
 
-        gui.prepareNewConversion();
+//        gui.prepareNewConversion();
         if (selectedCountTotalSubtitles == 0) { // there is no selection
-            gui.appErrorBundleMessage("msg.sublist.none.selected");
+//            gui.appErrorBundleMessage("msg.sublist.none.selected");
         } else { // there is selection and the process ended (either successfully or not)
-            if (! fewSubsSkipped) gui.appErrorBundleMessage("msg.conversion.finished");
+//            if (! fewSubsSkipped) gui.appErrorBundleMessage("msg.conversion.finished");
         }
     }
 
