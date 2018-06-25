@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="${name}" default="compile">
+<project name="${name}" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
 
   <!-- Load all the default properties, and any the user wants    -->
   <!-- to contribute (without having to type -D or edit this file -->
@@ -21,21 +21,24 @@
   <!-- ====================================================== -->
   <!-- Stuff needed by all targets                            -->
   <!-- ====================================================== -->
-  <target name="init" depends="clean" description="--> stuff required by all targets">
-    <mkdir dir="${build.dir}"/>
+<target name="resolve" description="-->dependencies required by googleSRTcli">
+<!--	<ivy:retrieve pattern="Libraries/[artifact]-[revision]-[type].[ext]" /> -->
+	<ivy:retrieve />
+</target>
+<target name="init" depends="clean,resolve" description="--> stuff required by all targets">
+	<mkdir dir="${build.dir}"/>
 	<mkdir dir="${build.dir}/META-INF"/>
-
-    <copy todir="${build.dir}" verbose="true">
-      <fileset dir="${src.dir}" includes="*.*"/>
-    </copy>
-    <copy todir="${build.dir}" verbose="true">
-      <fileset dir="${lib.dir}" includes="*.jar"/>
-    </copy>
+	<copy todir="${build.dir}" verbose="true">
+		<fileset dir="${src.dir}" includes="*.*"/>
+	</copy>
+	<copy todir="${build.dir}" verbose="true">
+		<fileset dir="${lib.dir}" includes="*.jar"/>
+	</copy>
 	<copy todir="${build.dir}/META-INF" verbose="true">
-  	  <fileset dir="${src.dir}" includes="MANIFEST.MF"/>
-    </copy>
+		<fileset dir="${src.dir}" includes="MANIFEST.MF"/>
+	</copy>
 	<delete file="${build.dir}/MANIFEST.MF"/>
-  </target>
+</target>
 
   <!-- target: clean-build  ============================================= -->
   <target name="clean" description="--> clean the project built files">
