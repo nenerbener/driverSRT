@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0">
-		<info	xmlns:ivy="antlib:org.apache.ivy.ant"
-				organisation="com.mceachern"
-				module="googleSRTcli" />
+	<info organisation="com.nenerbener" module="driverSRT">
+	</info>
 		<dependencies>
 				<!-- https://mvnrepository.com/artifact/junit/junit -->
 				<dependency org="junit" name="junit" rev="4.12" />
+				<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+				<dependency org="commons-io" name="commons-io" rev="2.4"/>
+				<!-- https://mvnrepository.com/artifact/jdom/jdom -->
+				<dependency org="jdom" name="jdom" rev="1.0"/>
 		</dependencies>
 </ivy-module>
 

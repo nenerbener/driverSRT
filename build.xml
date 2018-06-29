@@ -4,57 +4,65 @@
 
   <!-- Load all the default properties, and any the user wants    -->
   <!-- to contribute (without having to type -D or edit this file -->
-  <property file="${basedir}/default.properties" />
+  <property file="./default.properties" />
 
   <!-- the normal classpath -->
   <path id="classpath">
-    <pathelement location="${build.dir}"/>
-    <fileset dir="${build.dir}">
+    <pathelement location="${build.classes}"/>
+    <fileset dir="${build.lib}">
       <include name="*.jar" />
     </fileset>
+    <pathelement location="${build.conf}"/>
+    <pathelement location="${build.resources}"/>
   </path>
 
   <presetdef name="javac">
     <javac includeantruntime="false" />
   </presetdef>
 
-  <!-- ====================================================== -->
-  <!-- Stuff needed by all targets                            -->
-  <!-- ====================================================== -->
-<target name="resolve" description="-->dependencies required by googleSRTcli">
-<!--	<ivy:retrieve pattern="Libraries/[artifact]-[revision]-[type].[ext]" /> -->
-	<ivy:retrieve />
-</target>
-<target name="init" depends="clean,resolve" description="--> stuff required by all targets">
-	<mkdir dir="${build.dir}"/>
-	<mkdir dir="${build.dir}/META-INF"/>
-	<copy todir="${build.dir}" verbose="true">
-		<fileset dir="${src.dir}" includes="*.*"/>
-	</copy>
-	<copy todir="${build.dir}" verbose="true">
-		<fileset dir="${lib.dir}" includes="*.jar"/>
-	</copy>
-	<copy todir="${build.dir}/META-INF" verbose="true">
-		<fileset dir="${src.dir}" includes="MANIFEST.MF"/>
-	</copy>
-	<delete file="${build.dir}/MANIFEST.MF"/>
-</target>
-
-  <!-- target: clean-build  ============================================= -->
+  <!-- target: clean-build -->
   <target name="clean" description="--> clean the project built files">
-    <delete includeemptydirs="true" dir="${build.dir}"/>
-	<delete file="${basedir}/${final.name}.jar"/>
+    <delete dir="${build.dir}"/>
   </target>
 
+	<target name="resolve" description="dependencies required by driverSRT">
+		<ivy:resolve file="${ivy.file}" conf="default"/>
+		<ivy:retrieve/> 
+<!--		<ivy:retrieve pattern="Libraries/[artifact]-[revision]-[type].[ext]" />  -->
+	</target>
+
+	<target name="init" depends="clean,resolve" description="--> create build directory, download dependencies and copy">
+		<mkdir dir="${build.dir}"/>
+		<copy file="${base.dir}/default.properties" 
+			todir="${build.dir}"
+			verbose="true"/>
+		<copy file="${base.dir}/build.xml" 
+			todir="${build.dir}"
+			verbose="true"/>
+		<copy file="${base.dir}/ivy.xml" 
+			todir="${build.dir}"
+			verbose="true"/>
+		<mkdir dir="${build.lib}"/>
+		<copy todir="${build.lib}" verbose="true">
+			<fileset dir="${lib.dir}" includes="*.*"/>
+		</copy>
+		<mkdir dir="${build.resources}"/>
+		<copy todir="${build.resources}" verbose="true">
+			<fileset dir="${resources.dir}" includes="*.*"/>
+		</copy>
+		<mkdir dir="${build.classes}"/>
+		<mkdir dir="${build.dir}/META-INF"/>
+	</target>
+
   <!-- ====================================================== -->
-  <!-- Compile the Java files                                 -->
+	<!-- Compile the Java files to build/classes folder         -->
   <!-- ====================================================== -->
   <target name="compile" depends="init" description="--> compile Java files">
     <javac
      encoding="${build.encoding}"
      srcdir="${src.dir}"
-     includes="*.java"
-     destdir="${build.dir}"
+		 includes="com/nenerbener/**/*.java"
+     destdir="${build.classes}"
      debug="${javac.debug}"
      optimize="${javac.optimize}"
      target="${javac.version}"
@@ -68,10 +76,9 @@
   <!-- ================================================================== -->
   <!-- Make googleSRT.jar                                                 -->
   <!-- ================================================================== -->
-  <target name="jar" depends="compile" description="--> make Google2SRT.jar">
-	<jar jarfile="${final.name}.jar"
-         basedir="${build.dir}"
-		 manifest="${build.dir}/META-INF/MANIFEST.MF">
+  <target name="jar" depends="compile" description="--> make driverSRT.jar">
+	  <jar jarfile="${final.name}.jar"
+			basedir="${build.dir}">
     </jar>
   </target>
 
