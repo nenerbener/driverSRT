@@ -91,5 +91,17 @@
     </jar>
   </target>
 
-</project>
+  <!-- ================================================================== -->
+	<!-- run a default testcase run.dir=[] run.url=[] defined								-->
+	<!-- default.properties																						  	  -->
+  <!-- ================================================================== -->
+	<target name="run" depends="compile" description="--> run driverSRT.DriverSRT.class">
+		<java classname="com.nenerbener.driverSRT.DriverSRT">
+			<arg value="${run.dir}"/>
+			<arg value="${run.url}"/>
+			<classpath refid="classpath"/>
+			<!--			<classpath path="build/classes:build/lib/*.jar:build/resources"/>-->
+		</java>
+	</target>
 
+</project>
