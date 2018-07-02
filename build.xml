@@ -64,7 +64,7 @@
 	</target>
 
   <!-- ====================================================== -->
-	<!-- Compile the Java files to build/classes folder         -->
+	<!-- Compile the Java files to build/classes folder       -->
   <!-- ====================================================== -->
   <target name="compile" description="--> compile Java files">
     <javac
@@ -92,15 +92,26 @@
   </target>
 
   <!-- ================================================================== -->
-	<!-- run a default testcase run.dir=[] run.url=[] defined								-->
-	<!-- default.properties																						  	  -->
+	<!-- run a default testcase run.dir=[] run.url=[] defined		  	  -->
+	<!-- default.properties												  -->
   <!-- ================================================================== -->
 	<target name="run" depends="compile" description="--> run driverSRT.DriverSRT.class">
+		<java classname="com.nenerbener.driverSRT.DriverSRT">
+			<arg value="${run.dir}"/>
+			<arg value="${run.url}"/> 
+			<classpath refid="classpath"/>
+		</java>
+	</target>
+
+  <!-- ================================================================== -->
+	<!-- debug a default testcase run.dir=[] run.url=[] defined		  	  -->
+	<!-- default.properties												  -->
+  <!-- ================================================================== -->
+	<target name="debug" depends="compile" description="--> run driverSRT.DriverSRT.class">
 		<java classname="com.nenerbener.driverSRT.DriverSRT" fork="yes" failonerror="false" maxmemory="2048m">
 			<jvmarg value="-Xdebug"/>
 			<jvmarg value="-Xnoagent"/>
 			<jvmarg value="-Xrunjdwp:transport=dt_socket,address=5555,server=y,suspend=y"/>
-<!--			<arg value="${src.dir}"/> -->
 			<arg value="${run.dir}"/>
 			<arg value="${run.url}"/> 
 			<classpath refid="classpath"/>
