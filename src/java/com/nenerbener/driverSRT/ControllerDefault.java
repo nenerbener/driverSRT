@@ -81,7 +81,7 @@ public class ControllerDefault {
     
     // Parses a text file and returns subtitles for each video URL found
     protected void processURLListFile(InputStreamReader isr) {
-        videos = Converter.parseURLListFile(isr);
+        videos = ConverterDefault.parseURLListFile(isr);
         retrieveSubtitles();
     }
     
@@ -244,7 +244,6 @@ public class ControllerDefault {
         
         InputStreamReader isr;
         
-//        dataTracks = gui.getTableModelTracksData();
         lTracks = this.getTracks();
 
 //        selectedCountTotalSubtitles = gui.tmSubtitlesLists_getNumberSelectedTracks();
@@ -436,8 +435,6 @@ public class ControllerDefault {
         
         NetSubtitle srcLang;
         
-//        dataTracks = gui.getTableModelTracksData();
-//        dataTargets = gui.getTableModelTargetsData();
         lTracks = getTracks();
         lTargets = getTargets();
 
@@ -821,7 +818,6 @@ public class ControllerDefault {
         
         InputStreamReader isr;
         
-//        dataTracks = gui.getTableModelTracksData();
         lTracks = this.getTracks();
 
         selectedCountTotalSubtitles = 1;  //set to first track which I hope is the best Closed Caption option

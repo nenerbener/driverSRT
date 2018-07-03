@@ -149,12 +149,13 @@ public class Settings {
         return this.port;
     }
 
-    public Settings(ResourceBundle bundle) 
+//    public Settings(ResourceBundle bundle) 
+    public Settings() 
     {
-        this.bundle = bundle;
+//        this.bundle = bundle;
         
         // System language
-        localeLanguage = bundle.getLocale().getLanguage();
+//        localeLanguage = bundle.getLocale().getLanguage();
         
         // Initializing XML tools
         xmlparser = new SAXBuilder();
@@ -184,11 +185,11 @@ public class Settings {
             if (osname != null && osname.startsWith("Windows")) {
                 settingsPath = System.getenv("APPDATA") +
                         System.getProperty("file.separator") +
-                        "Google2SRT";
+                        "driverSRT";
             } else {
                 settingsPath = System.getProperty("user.home") + 
                         System.getProperty("file.separator") +
-                        ".google2srt";
+                        ".driverSRT";
             }
 
             try {

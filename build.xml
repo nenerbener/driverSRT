@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="${name}" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="${name}" xmlns:ivy="antlib:org.apache.ivy.ant">
 
   <!-- Load all the default properties, and any the user wants    -->
   <!-- to contribute (without having to type -D or edit this file -->
@@ -13,7 +13,7 @@
       <include name="*.jar" />
     </fileset>
     <pathelement location="${build.conf}"/>
-    <pathelement location="${build.resources}"/>
+    <pathelement location="${build.resources}"/> 
   </path>
 
   <!-- the buildpath -->
@@ -40,7 +40,7 @@
 <!--		<ivy:retrieve pattern="Libraries/[artifact]-[revision]-[type].[ext]" />  -->
 	</target>
 
-	<target name="init" depends="clean,resolve" description="--> create build directory, download dependencies and copy">
+	<target name="1-init" depends="clean,resolve" description="--> create build directory, download dependencies and copy">
 		<mkdir dir="${build.dir}"/>
 		<copy file="${base.dir}/default.properties" 
 			todir="${build.dir}"
@@ -66,7 +66,7 @@
   <!-- ====================================================== -->
 	<!-- Compile the Java files to build/classes folder       -->
   <!-- ====================================================== -->
-  <target name="compile" description="--> compile Java files">
+  <target name="2-compile" description="--> compile Java files">
     <javac
      encoding="${build.encoding}"
      srcdir="${src.dir}"
@@ -85,7 +85,7 @@
   <!-- ================================================================== -->
   <!-- Make jar file                                                      -->
   <!-- ================================================================== -->
-  <target name="jar" depends="compile" description="--> make driverSRT.jar">
+  <target name="jar" depends="2-compile" description="--> make driverSRT.jar">
 	  <jar jarfile="${final.name}.jar"
 			basedir="${build.dir}">
     </jar>
@@ -95,7 +95,7 @@
 	<!-- run a default testcase run.dir=[] run.url=[] defined		  	  -->
 	<!-- default.properties												  -->
   <!-- ================================================================== -->
-	<target name="run" depends="compile" description="--> run driverSRT.DriverSRT.class">
+	<target name="3a-run" depends="2-compile" description="--> run driverSRT.DriverSRT.class">
 		<java classname="com.nenerbener.driverSRT.DriverSRT">
 			<arg value="${run.dir}"/>
 			<arg value="${run.url}"/> 
@@ -107,7 +107,7 @@
 	<!-- debug a default testcase run.dir=[] run.url=[] defined		  	  -->
 	<!-- default.properties												  -->
   <!-- ================================================================== -->
-	<target name="debug" depends="compile" description="--> run driverSRT.DriverSRT.class">
+	<target name="3b-debug" depends="2-compile" description="--> run driverSRT.DriverSRT.class">
 		<java classname="com.nenerbener.driverSRT.DriverSRT" fork="yes" failonerror="false" maxmemory="2048m">
 			<jvmarg value="-Xdebug"/>
 			<jvmarg value="-Xnoagent"/>

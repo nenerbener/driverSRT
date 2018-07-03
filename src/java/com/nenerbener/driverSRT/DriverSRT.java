@@ -6,8 +6,6 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ResourceBundle;
-import org.jdom.input.JDOMParseException;
 
 public class DriverSRT {
 
@@ -42,8 +40,7 @@ public class DriverSRT {
 			System.exit(-1);
 		}
 
-		ResourceBundle bundle = ControllerDefault.getBundle();
-		Settings appSettings = new Settings(bundle);
+		Settings appSettings = new Settings();
 		appSettings.loadSettings();
 
 		// set output directory and input URL
