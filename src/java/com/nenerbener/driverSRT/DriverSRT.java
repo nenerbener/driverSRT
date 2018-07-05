@@ -6,9 +6,28 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+// TODO: Auto-generated Javadoc
 
+/**
+ * Driver class that demonstrates the simplest non-gui implementation of Google2SRT developed by [].
+ * Note that this class was written to be called using ./build.xml "ant run" with the input args automatically
+ * loaded from default.properties file, but can be run from commandline as below. It only reads and processes 1 video file.
+ *
+ * @author Marc McEachern
+ * @version Driver 0.01
+ */
 public class DriverSRT {
-
+	
+	/**
+	 * Commandline execution -
+	 * java com.nenerbener.driverSRT.DriverSRT -cp ./build/classes:./build/lib/*.jar:./build/resources output-directory input youtube-URL
+	 * 
+	 * @param args 
+	 * <li>arg[0] is the output directory (does not need to be created a priori)
+	 * <li>arg[1] is the input URL (e.g., https://www.youtube.com/watch?v=hyttxEhAR2k)
+	 * <li>Output is a directory (arg[0], created or existing) with an extracted closed caption from arg[1] video.
+	 * 
+	 */
 	public static void main(String[] args) {
 
 		// process commandline parameters
@@ -55,6 +74,12 @@ public class DriverSRT {
 		//		System.exit(0);
 	}
 
+	/**
+	 * returns true if URLName exists.
+	 *
+	 * @param URLName The URL (Youtube video link) to check if exists on internet
+	 * @return true, if successful
+	 */
 	public static boolean URLexists(String URLName){
 		try {
 			HttpURLConnection.setFollowRedirects(false);
@@ -71,6 +96,9 @@ public class DriverSRT {
 		}
 	}  
 
+	/**
+	 * prints out to standard out the commandline usage. Does not exit() from program inside method.
+	 */
 	public static void usage() {
 		System.out.println("java driverSRT [Output directory] [input URL]");
 	}
