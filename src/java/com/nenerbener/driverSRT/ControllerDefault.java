@@ -33,13 +33,13 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import org.jdom.input.JDOMParseException;
+//import java.util.ResourceBundle;
+//import org.jdom.input.JDOMParseException;
 
 public class ControllerDefault {
 
-    private List<Video> videos;                             // List of videos
-    ResourceBundle bundle;
+    private List<Video> videos;     // List of videos
+//    ResourceBundle bundle;
     private Settings appSettings; 	// Application settings
 //    private GUI gui;                                        // GUI
     private List<List<NetSubtitle>> lSubsWithTranslations;  // Tracks (item 0) + Targets (item 1)
@@ -80,16 +80,31 @@ public class ControllerDefault {
     }
     
     // Parses a text file and returns subtitles for each video URL found
-    protected void processURLListFile(InputStreamReader isr) {
-        videos = ConverterDefault.parseURLListFile(isr);
-        retrieveSubtitles();
-    }
+//    protected void processURLListFile(InputStreamReader isr) {
+//        videos = ConverterDefault.parseURLListFile(isr);
+//        retrieveSubtitles();
+//    }
     
     // Returns subtitles for one video URL
-    protected void processInputURL() {
+//    protected void processInputURL() {
+//        videos = new ArrayList<Video>();
+//        videos.add(new Video(appSettings.getURLInput()));
+//        retrieveSubtitles();
+//    }
+    
+    // Returns one MagicURL and associated metadata for one video URL
+    protected boolean processInputURL() {
+    	boolean hasClosedCaption = false;
         videos = new ArrayList<Video>();
         videos.add(new Video(appSettings.getURLInput()));
-        retrieveSubtitles();
+        try {
+        	retrieveSubtitles();
+        } catch (Video.NoSubs e){
+        	hasClosedCaption = false;
+        	return hasClosedCaption; //MagicURL not found
+        }
+        hasClosedCaption = true;
+        return hasClosedCaption; 
     }
     
     // Returns true if there is not at least 1 track and 1 target
@@ -102,7 +117,7 @@ public class ControllerDefault {
 
 
     // Retrieves LIST of subtitles from the network
-    public void retrieveSubtitles() {
+    public void retrieveSubtitles() throws Video.NoSubs {
         List<List<NetSubtitle>> al;
         List<Video> invalidVideos;
         int videoCount, videoTotalCount;
@@ -153,7 +168,7 @@ public class ControllerDefault {
 //                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.infile.no.subtitles.found");
 //                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
                 invalidVideos.add(v);
-                continue;
+                throw e;
             } catch (MalformedURLException e) {
 //                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.invalid.format");
 //                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
@@ -232,7 +247,7 @@ public class ControllerDefault {
     }
     
     // Downloads multiple tracks from the network and converts them to SRT
-    protected void convertSubtitlesTracks() {
+    protected boolean convertSubtitlesTracks() {
         ConverterDefault conv;
         Video v;
 
@@ -241,6 +256,7 @@ public class ControllerDefault {
         List<NetSubtitle> lTracks;
         int i, selectedCountTotalSubtitles, selectedCountTracks;
         boolean fewSubsSkipped = false;
+        boolean convSuccess;
         
         InputStreamReader isr;
         
@@ -403,7 +419,11 @@ public class ControllerDefault {
                             (double) 0,
                             appSettings.getRemoveTimingSubtitles());
 
-                        conv.run();
+//                        conv.run();
+                        if(!conv.run()){
+                        	convSuccess = false;
+                        	return convSuccess;
+                        };
                     }
                 }
                 selectedCountTracks++;
@@ -411,11 +431,14 @@ public class ControllerDefault {
         }
 
 //        gui.prepareNewConversion();
-        if (selectedCountTotalSubtitles == 0) { // there is no selection
+//        if (selectedCountTotalSubtitles == 0) { // there is no selection
 //            gui.appErrorBundleMessage("msg.sublist.none.selected");
-        } else { // there is selection and the process ended (either successfully or not)
+//        } else { // there is selection and the process ended (either successfully or not)
 //            if (! fewSubsSkipped) gui.appErrorBundleMessage("msg.conversion.finished");
-        }
+//        }
+
+        convSuccess = true;
+        return convSuccess;
     }
 
     // Downloads multiple targets (translated tracks) from the network and converts them to SRT
@@ -726,12 +749,12 @@ public class ControllerDefault {
     }
     
     // Accepts String URL and returns subtitles
-    protected void processInputURL(String URLInput) {
-    	appSettings.setURLInput(URLInput);
-        videos = new ArrayList<Video>();
-        videos.add(new Video(appSettings.getURLInput()));
-        retrieveSubtitles();
-    }
+//    protected void processInputURL(String URLInput) {
+//    	appSettings.setURLInput(URLInput);
+//        videos = new ArrayList<Video>();
+//        videos.add(new Video(appSettings.getURLInput()));
+//        retrieveSubtitles();
+//    }
     
     void ConvertActionPerformed() {
 

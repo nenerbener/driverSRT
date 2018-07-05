@@ -165,6 +165,7 @@ public class Video {
                 urlList = NetSubtitle.getListURL(getMethod(), getParams());
                 xmlDoc = readListURL(urlList);
                 result = getListSubsWithTranslations(xmlDoc, getParams(), getMethod());
+                throw new NoSubs();
             }
             
         } else {

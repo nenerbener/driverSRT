@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 // TODO: Auto-generated Javadoc
 
 /**
- * Driver class that demonstrates the simplest non-gui implementation of Google2SRT developed by [].
+ * Driver class that demonstrates the simplest non-gui implementation of Google2SRT developed by [reference]. 
  * Note that this class was written to be called using ./build.xml "ant run" with the input args automatically
  * loaded from default.properties file, but can be run from commandline as below. It only reads and processes 1 video file.
  *
@@ -68,8 +68,14 @@ public class DriverSRT {
 
 		ControllerDefault controller = new ControllerDefault(appSettings);
 
-		controller.processInputURL();
-		controller.convertSubtitlesTracks();
+		if (!controller.processInputURL()) {
+			System.out.println("Program exited abnormally. URL has not attached closed caption track.");
+			System.exit(-1);
+		} 
+		if (!controller.convertSubtitlesTracks()) {
+			System.out.println("Program exited abnormally. Could not download closed caption data successfully.");
+			System.exit(-1);
+		}
 		System.out.println("Program exited normally.");
 		//		System.exit(0);
 	}
