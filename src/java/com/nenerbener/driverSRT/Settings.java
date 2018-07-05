@@ -41,7 +41,7 @@ import org.jdom.output.XMLOutputter;
 
 
 public class Settings {
-    protected static final boolean DEBUG = true; // Enabled debug mode by default may be useful to troubleshoot
+    protected static final boolean DEBUG = false; // Enabled debug mode by default may be useful to troubleshoot
     protected static final String PROJECT_URL = "http://google2srt.sourceforge.net";
     protected static final String PROJECT_README = "README.TXT";
     protected static final String PROJECT_HELP_NON_LOCALISED_PATH = "doc";
@@ -76,7 +76,7 @@ public class Settings {
     private static final String DEFAULT_URL_INPUT = "";
     // Some samples (debug)
     // http://www.youtube.com/watch?v=c8RGPpcenZY (4 real tracks)
-    // http://www.youtube.com/watch?v=XraeBDMm2PM (5 real tracks with names)
+    // http://www.youtube.com/watch?v=XraeBDMm2PtM (5 real tracks with names)
     // http://www.youtube.com/watch?v=IElqf-FCMs8 (EN ASR + EN track)
     // http://www.youtube.com/watch?v=UOfn1cTARrY (ES ASR)
     // http://www.youtube.com/watch?v=PH8JuizIXw8 (EN ASR + many real tracks)

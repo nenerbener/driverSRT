@@ -4,11 +4,11 @@
 	</info>
 		<dependencies>
 				<!-- https://mvnrepository.com/artifact/junit/junit -->
-				<dependency org="junit" name="junit" rev="4.12" />
+				<dependency org="junit" name="junit" rev="4.12" conf="*->*,!sources,!javadoc"/>
 				<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-				<dependency org="commons-io" name="commons-io" rev="2.4"/>
+				<dependency org="commons-io" name="commons-io" rev="2.4" conf="*->*,!sources,!javadoc"/>
 				<!-- https://mvnrepository.com/artifact/jdom/jdom -->
-				<dependency org="jdom" name="jdom" rev="1.0"/>
+				<dependency org="jdom" name="jdom" rev="1.0" conf="*->*,!sources,!javadoc"/>
 		</dependencies>
 </ivy-module>
 

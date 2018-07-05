@@ -6,7 +6,6 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-// TODO: Auto-generated Javadoc
 
 /**
  * Driver class that demonstrates the simplest non-gui implementation of Google2SRT developed by [reference]. 
@@ -68,6 +67,7 @@ public class DriverSRT {
 
 		ControllerDefault controller = new ControllerDefault(appSettings);
 
+		System.out.println("Input URL: " + args[1]);
 		if (!controller.processInputURL()) {
 			System.out.println("Program exited abnormally. URL has not attached closed caption track.");
 			System.exit(-1);
@@ -76,8 +76,8 @@ public class DriverSRT {
 			System.out.println("Program exited abnormally. Could not download closed caption data successfully.");
 			System.exit(-1);
 		}
-		System.out.println("Program exited normally.");
-		//		System.exit(0);
+		System.out.println("Program exited normally. Results are in " + args[0] + "/[youtube vid ref].srt");
+			System.exit(0);
 	}
 
 	/**
