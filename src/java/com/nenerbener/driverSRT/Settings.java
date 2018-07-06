@@ -263,11 +263,11 @@ public class Settings {
         OutputStreamWriter osw;
         
         try {
-            if (Settings.DEBUG) System.out.println("(DEBUG) Writing to settings file: " + appSettingsFile);
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) Writing to settings file: " + appSettingsFile);
             osw = new OutputStreamWriter(new FileOutputStream(appSettingsFile), "UTF-8");
             return saveSettingsToXMLFile(osw);
         } catch (FileNotFoundException ex) {
-            if (Settings.DEBUG) System.out.println("(DEBUG) Failed writing to settings file: " + appSettingsFile);
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) Failed writing to settings file: " + appSettingsFile);
             return false;
         } catch (UnsupportedEncodingException ex) {
             return false;
@@ -305,11 +305,11 @@ public class Settings {
         try {
             xmlwriter.output(doc, osw);
         } catch (IOException ex) {
-            if (Settings.DEBUG) System.out.println("(DEBUG) XML file could not be written");
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) XML file could not be written");
             return false;
         }
 
-        if (Settings.DEBUG) System.out.println("(DEBUG) Settings written to XML file successfully");
+        if (Settings.isDEBUG()) System.out.println("(DEBUG) Settings written to XML file successfully");
         return true;
     }
 
@@ -349,10 +349,10 @@ public class Settings {
         try {
             doc = xmlparser.build(isr);
         } catch (JDOMException ex) {
-            if (Settings.DEBUG) System.out.println("(DEBUG) Exception parsing XML settings: " + ex.getMessage());
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) Exception parsing XML settings: " + ex.getMessage());
             return false;
         } catch (IOException ex) {
-            if (Settings.DEBUG) System.out.println("(DEBUG) Settings could not be read from XML file");
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) Settings could not be read from XML file");
             return false;
         }
         
@@ -425,7 +425,7 @@ public class Settings {
             largeNumberSelectedSubtitlesWarning = DEFAULT_LARGE_NUMBER_SELECTED_SUBTITLES_WARNING;
         
         
-        if (Settings.DEBUG) System.out.println("(DEBUG) Settings parsed from XML file successfully");
+        if (Settings.isDEBUG()) System.out.println("(DEBUG) Settings parsed from XML file successfully");
         return true;
     }
 }

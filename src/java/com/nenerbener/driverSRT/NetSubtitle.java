@@ -198,14 +198,14 @@ public class NetSubtitle {
                         "name=" + URLEncoder.encode(this.name, "UTF-8") +
                         "&lang=" + URLEncoder.encode(this.lang, "UTF-8") +
                         "&docid=" + URLEncoder.encode(this.getId(), "UTF-8");
-                if (Settings.DEBUG) System.out.println("(DEBUG) Track URL: " + s);
+                if (Settings.isDEBUG()) System.out.println("(DEBUG) Track URL: " + s);
                 return s;
             case YouTubeLegacy:
                 s = "http://video.google.com/timedtext?type=track&" +
                         "name=" + URLEncoder.encode(this.name, "UTF-8") +
                         "&lang=" + URLEncoder.encode(this.lang, "UTF-8") +
                         "&v=" + URLEncoder.encode(this.getId(), "UTF-8");
-                if (Settings.DEBUG) System.out.println("(DEBUG) Track URL (Legacy): " + s);
+                if (Settings.isDEBUG()) System.out.println("(DEBUG) Track URL (Legacy): " + s);
                 return s;
             case YouTubeSignature:        
                 params = video.getParams();
@@ -233,11 +233,11 @@ public class NetSubtitle {
                 if (NetSubtitle.Tipus.YouTubeASRTrack.equals(this.type))
                 {
                     s += "&kind=asr";
-                    if (Settings.DEBUG) System.out.println("(DEBUG) Track ASR URL (Signature): " + s);
+                    if (Settings.isDEBUG()) System.out.println("(DEBUG) Track ASR URL (Signature): " + s);
                 }
                 else
                 {
-                    if (Settings.DEBUG) System.out.println("(DEBUG) Track URL (Signature): " + s);
+                    if (Settings.isDEBUG()) System.out.println("(DEBUG) Track URL (Signature): " + s);
                 }
                 
                 return s;                
@@ -273,7 +273,7 @@ public class NetSubtitle {
                         "&lang=" + URLEncoder.encode(source.lang, "UTF-8") +
                         "&tlang=" + URLEncoder.encode(this.lang, "UTF-8") +
                         "&v=" + URLEncoder.encode(source.getId(), "UTF-8");
-                if (Settings.DEBUG) System.out.println("(DEBUG) Target URL (Legacy): " + s);
+                if (Settings.isDEBUG()) System.out.println("(DEBUG) Target URL (Legacy): " + s);
                 return s;
             case YouTubeSignature:
                 /* *** IMPORTANT NOTE ***
@@ -307,11 +307,11 @@ public class NetSubtitle {
                 if (NetSubtitle.Tipus.YouTubeASRTrack.equals(source.type))
                 {
                     s += "&kind=asr";
-                    if (Settings.DEBUG) System.out.println("(DEBUG) Target ASR URL (Signature): " + s);
+                    if (Settings.isDEBUG()) System.out.println("(DEBUG) Target ASR URL (Signature): " + s);
                 }
                 else
                 {
-                    if (Settings.DEBUG) System.out.println("(DEBUG) Target URL (Signature): " + s);
+                    if (Settings.isDEBUG()) System.out.println("(DEBUG) Target URL (Signature): " + s);
                 }
 
                 return s;
@@ -324,15 +324,15 @@ public class NetSubtitle {
         switch (method) {
             case Google:
                 s = "http://video.google.com/videotranscript?frame=c&type=list&docid=" + params.get("docid"); //+ id;
-                if (Settings.DEBUG) System.out.println("(DEBUG) List URL: " + s);
+                if (Settings.isDEBUG()) System.out.println("(DEBUG) List URL: " + s);
                 return s;
             // Subtitles only (until v0.5.6)
             //    s = "http://video.google.com/timedtext?type=list&v=" + id;
-            //    if (Settings.DEBUG) System.out.println("(DEBUG) Tracks list URL: " + s);
+            //    if (Settings.isDEBUG()) System.out.println("(DEBUG) Tracks list URL: " + s);
             //    return s;
             case YouTubeLegacy: // Subtitles and translations (from v0.6) using "legacy method"
                 s = "http://video.google.com/timedtext?type=list&tlangs=1&v=" + params.get("v");
-                if (Settings.DEBUG) System.out.println("(DEBUG) Tracks with targets list URL (Legacy): " + s);
+                if (Settings.isDEBUG()) System.out.println("(DEBUG) Tracks with targets list URL (Legacy): " + s);
                 return s;
             case YouTubeSignature:
                 /* ORIGINAL "Magic" URL example
@@ -374,7 +374,7 @@ public class NetSubtitle {
                 
                 s += "asrs=1&type=list&tlangs=1";
                 
-            if (Settings.DEBUG) System.out.println("(DEBUG) ASR/tracks with targets list URL (Signature): " + s);
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) ASR/tracks with targets list URL (Signature): " + s);
             return s;
         }
         return null;

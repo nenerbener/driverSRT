@@ -146,7 +146,7 @@ public class Video {
                 _URL = url.toString();
             }
             
-            if (Settings.DEBUG) System.out.println("(DEBUG) Final video URL: " + _URL);
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) Final video URL: " + _URL);
             try {
                 _magicURL = retrieveMagicURL(_URL);
                 _title = retrieveVideoTitle();
@@ -157,7 +157,7 @@ public class Video {
                 result = getListSubsWithTranslations(xmlDoc, getParams(), getMethod());
             }
             catch (Exception ex) {
-                if (Settings.DEBUG) System.out.println("(DEBUG) Exception reading via Signature mode. Switching to Legacy mode...");
+                if (Settings.isDEBUG()) System.out.println("(DEBUG) Exception reading via Signature mode. Switching to Legacy mode...");
                 _magicURL = "";
                 _title = "";
                 _params = getURLParams(_URL);
@@ -186,7 +186,7 @@ public class Video {
             magicURL = NetSubtitle.getMagicURL(YouTubeWebSource);
             
             
-            if (Settings.DEBUG) System.out.println("(DEBUG) *Magic* URL: " + magicURL);
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) *Magic* URL: " + magicURL);
             return magicURL;
     }
     
