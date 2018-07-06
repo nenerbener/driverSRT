@@ -6,6 +6,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.lang.System;
 
 /**
  * Driver class that demonstrates the simplest non-gui implementation of Google2SRT developed by [reference]. 
@@ -27,8 +28,12 @@ public class DriverSRT {
 	 * <li>Output is a directory (arg[0], created or existing) with an extracted closed caption from arg[1] video.
 	 * 
 	 */
+	private static String SETTING_DEBUG_OPTION_STR = "setDebug";
+
 	public static void main(String[] args) {
 
+		// debug option default
+		Boolean settingDebugOption = false;
 		// process commandline parameters
 		// confirm 2 commandline options
 		if (args.length != 2) {
@@ -60,6 +65,15 @@ public class DriverSRT {
 
 		Settings appSettings = new Settings();
 		appSettings.loadSettings();
+
+		//Read debug property from cmdline, set if exists, default to false;
+		settingDebugOption = 
+				Boolean.parseBoolean(System.getProperty(SETTING_DEBUG_OPTION_STR));
+		if(settingDebugOption) {
+			appSettings.setDEBUG(true);
+		} else {
+			appSettings.setDEBUG(false);
+		}
 
 		// set output directory and input URL
 		appSettings.setOutput(args[0]);

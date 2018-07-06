@@ -41,8 +41,9 @@ import org.jdom.output.XMLOutputter;
 
 
 public class Settings {
-    protected static final boolean DEBUG = false; // Enabled debug mode by default may be useful to troubleshoot
-    protected static final String PROJECT_URL = "http://google2srt.sourceforge.net";
+//    protected static final boolean DEBUG = false; // Enabled debug mode by default may be useful to troubleshoot
+    protected static boolean DEBUG = false; // Enabled debug mode by default may be useful to troubleshoot
+	protected static final String PROJECT_URL = "http://google2srt.sourceforge.net";
     protected static final String PROJECT_README = "README.TXT";
     protected static final String PROJECT_HELP_NON_LOCALISED_PATH = "doc";
     protected static final String PROJECT_HELP_FILE_NAME = "help.html";
@@ -120,6 +121,14 @@ public class Settings {
     // Windows: %APPDATA%\Google2SRT\settings.xml
     // Other: ~/.google2srt/settings.xml
     private String appSettingsFile;
+
+    public static boolean isDEBUG() {
+		return DEBUG;
+	}
+
+	public static void setDEBUG(boolean dEBUG) {
+		DEBUG = dEBUG;
+	}
 
     public boolean isProxySet() {
         if (hostAddress != null && port > 0) {

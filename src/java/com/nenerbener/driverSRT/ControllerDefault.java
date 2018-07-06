@@ -231,7 +231,7 @@ public class ControllerDefault {
 //            gui.prepareNewConversion();
             return;
         } catch (java.io.UnsupportedEncodingException ex) {
-            if (Settings.DEBUG) System.out.println("(DEBUG) encoding not supported");
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) encoding not supported");
         }
         
         fileName = Common.removeExtension((new File(appSettings.getFileInput())).getName()) + ".srt";
@@ -281,7 +281,7 @@ public class ControllerDefault {
                     v.setMethod(NetSubtitle.Method.YouTubeSignature);
                     isr = v.readURL(lTracks.get(i).getTrackURL());
                 } catch (Exception ex1) {
-                    if (Settings.DEBUG) {
+                    if (Settings.isDEBUG()) {
                         System.out.println("(DEBUG) URL could not be read via Signature method...");
                         System.out.println(
                             String.format("(DEBUG) Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s, Exception message='%s'",
@@ -297,7 +297,7 @@ public class ControllerDefault {
                     if (lTracks.get(i).getType() == NetSubtitle.Tipus.YouTubeASRTrack)
                     {
                         // YouTube ASR cannot be retrieved by using Legacy method.
-                        if (Settings.DEBUG) {
+                        if (Settings.isDEBUG()) {
                             System.out.println("(DEBUG) YouTube ASR cannot be retrieved via Legacy method. Operation partially aborted.");
                             System.out.println(
                                 String.format("(DEBUG) Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s",
@@ -316,14 +316,14 @@ public class ControllerDefault {
                     {
                         // A YouTube track/target can be retrieved by using legacy method.
                         // However, GUI should not reach this point with a target
-                        if (Settings.DEBUG) System.out.println("(DEBUG) Switching to YouTube Legacy mode and retrying...");
+                        if (Settings.isDEBUG()) System.out.println("(DEBUG) Switching to YouTube Legacy mode and retrying...");
                         v.setMethod(NetSubtitle.Method.YouTubeLegacy);
 
                         try
                         {
                             isr = v.readURL(lTracks.get(i).getTrackURL(NetSubtitle.Method.YouTubeLegacy));
                         } catch (Exception ex2) {
-                            if (Settings.DEBUG) {
+                            if (Settings.isDEBUG()) {
                                 System.out.println("(DEBUG) URL could not be read with Legacy method. Operation partially aborted");
                                 System.out.println(
                                     String.format("(DEBUG) Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s, Exception message='%s'",
@@ -344,7 +344,7 @@ public class ControllerDefault {
                     {
                         // YouTube Target should not reach this point due to GUI.
                         // Google Track should not reach this point.
-                        if (Settings.DEBUG) System.out.println("(DEBUG) Entered wrong section of code. Unexpected result.");
+                        if (Settings.isDEBUG()) System.out.println("(DEBUG) Entered wrong section of code. Unexpected result.");
                         fewSubsSkipped = true;                        
 //                        if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
 //                        else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTracks.get(i).getLang() + "," + lTracks.get(i).getIdXML() + "]");
@@ -390,14 +390,14 @@ public class ControllerDefault {
                             lTracks.get(i).getType() == NetSubtitle.Tipus.YouTubeTrack)
                     {
                         // A YouTube track/target can be retrieved by using legacy method.
-                        if (Settings.DEBUG) System.out.println("(DEBUG) Switching to YouTube Legacy mode and retrying...");
+                        if (Settings.isDEBUG()) System.out.println("(DEBUG) Switching to YouTube Legacy mode and retrying...");
                         v.setMethod(NetSubtitle.Method.YouTubeLegacy);
 
                         try
                         {
                             isr = v.readURL(lTracks.get(i).getTrackURL(NetSubtitle.Method.YouTubeLegacy));
                         } catch (Exception ex1) {
-                            if (Settings.DEBUG) {
+                            if (Settings.isDEBUG()) {
                                 System.out.println("(DEBUG) URL could not be read with Legacy method. Operation partially aborted");
                                 System.out.println(
                                     String.format("(DEBUG) Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s, Exception message='%s'",
@@ -484,7 +484,7 @@ public class ControllerDefault {
                         
                         // If the source is an ASR track and we cannot use Signature method, operation must be completely aborted
                         if (srcLang.getType() == NetSubtitle.Tipus.YouTubeASRTrack && v.getMagicURL().isEmpty()) {
-                            if (Settings.DEBUG) {
+                            if (Settings.isDEBUG()) {
                                 System.out.println("(DEBUG) YouTube ASR cannot be retrieved via Legacy method. Operation completely aborted.");
                                 System.out.println(
                                     String.format("(DEBUG) [SOURCE] Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s",
@@ -512,7 +512,7 @@ public class ControllerDefault {
                             v.setMethod(NetSubtitle.Method.YouTubeSignature);
                             isr = v.readURL(lTargets.get(j).getTargetURL(srcLang));
                         } catch (Exception ex1) {
-                            if (Settings.DEBUG) {
+                            if (Settings.isDEBUG()) {
                                 System.out.println("(DEBUG) URL could not be read... ");
                                 System.out.println(
                                     String.format("(DEBUG) [TARGET] Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s, Exception message='%s'",
@@ -528,7 +528,7 @@ public class ControllerDefault {
                             if (srcLang.getType() == NetSubtitle.Tipus.YouTubeASRTrack)
                             {
                                 // YouTube ASR targets cannot be retrieved by using Legacy method.
-                                if (Settings.DEBUG) {
+                                if (Settings.isDEBUG()) {
                                     System.out.println("(DEBUG) YouTube targets translated from ASR cannot be retrieved via Legacy method. Operation partially aborted.");
                                     System.out.println(
                                         String.format("(DEBUG) [TARGET] Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s",
@@ -547,14 +547,14 @@ public class ControllerDefault {
                             {
                                 // NOTE: In order if it is worth to use legacy mode, we check the SOURCE (ASR or normal track)
                                 // A YouTube track/target can be retrieved by using legacy method.
-                                if (Settings.DEBUG) System.out.println("(DEBUG) Switching to YouTube Legacy mode and retrying...");
+                                if (Settings.isDEBUG()) System.out.println("(DEBUG) Switching to YouTube Legacy mode and retrying...");
                                 v.setMethod(NetSubtitle.Method.YouTubeLegacy);
 
                                 try
                                 {
                                     isr = v.readURL(lTargets.get(j).getTargetURL(NetSubtitle.Method.YouTubeLegacy, srcLang));
                                 } catch (Exception ex2) {
-                                    if (Settings.DEBUG) {
+                                    if (Settings.isDEBUG()) {
                                         System.out.println("(DEBUG) URL could not be read with legacy method. Operation partially aborted");
                                         System.out.println(
                                             String.format("(DEBUG) [TARGET] Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s, Exception message='%s'",
@@ -575,7 +575,7 @@ public class ControllerDefault {
                             {
                                 // YouTube Track should not reach this point due to GUI.
                                 // Google Track should not reach this point.
-                                if (Settings.DEBUG) System.out.println("(DEBUG) Entered wrong section of code. Unexpected result.");
+                                if (Settings.isDEBUG()) System.out.println("(DEBUG) Entered wrong section of code. Unexpected result.");
                                 fewSubsSkipped = true;
 //                                if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
 //                                else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTargets.get(j).getLang() + "," + lTargets.get(j).getIdXML() + "]");
@@ -627,14 +627,14 @@ public class ControllerDefault {
                                     srcLang.getType() == NetSubtitle.Tipus.YouTubeTrack)
                             {
                                 // A YouTube track/target can be retrieved by using legacy method.
-                                if (Settings.DEBUG) System.out.println("(DEBUG) Switching to YouTube Legacy mode and retrying...");
+                                if (Settings.isDEBUG()) System.out.println("(DEBUG) Switching to YouTube Legacy mode and retrying...");
                                 v.setMethod(NetSubtitle.Method.YouTubeLegacy);
 
                                 try
                                 {
                                     isr = v.readURL(lTargets.get(j).getTargetURL(NetSubtitle.Method.YouTubeLegacy, srcLang));
                                 } catch (Exception ex1) {
-                                    if (Settings.DEBUG) {
+                                    if (Settings.isDEBUG()) {
                                         System.out.println("(DEBUG) URL could not be read with Legacy method. Operation partially aborted");
                                         System.out.println(
                                             String.format("(DEBUG) Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s, Exception message='%s'",
@@ -692,12 +692,12 @@ public class ControllerDefault {
                     File.separator +
                     Settings.PROJECT_HELP_FILE_NAME;
             
-            if (Settings.DEBUG) System.out.println("(DEBUG) Opening " + path + "...");
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) Opening " + path + "...");
             Desktop.getDesktop().open(new File(path));
         } catch (Exception ex) {
             try {
                 // It failed. Attempting default language (English)
-                if (Settings.DEBUG) System.out.println("(DEBUG) File " + path + " could not be opened");
+                if (Settings.isDEBUG()) System.out.println("(DEBUG) File " + path + " could not be opened");
                 
                 // Examples: "doc/en/help.html", "doc\\en\\help.html" (without single backslashes)
                 pwd = new File(new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent());
@@ -709,11 +709,11 @@ public class ControllerDefault {
                         File.separator +
                         Settings.PROJECT_HELP_FILE_NAME;
 
-                if (Settings.DEBUG) System.out.println("(DEBUG) Opening " + path + "...");
+                if (Settings.isDEBUG()) System.out.println("(DEBUG) Opening " + path + "...");
                 Desktop.getDesktop().open(new File(path));
             } catch (Exception ex2) {
                 // It failed again. Sending user to project website
-                if (Settings.DEBUG) System.out.println("(DEBUG) File " + path + " could not be opened");
+                if (Settings.isDEBUG()) System.out.println("(DEBUG) File " + path + " could not be opened");
                 visitWebsite();
             }
         }
@@ -729,22 +729,22 @@ public class ControllerDefault {
                     File.separator +
                     Settings.PROJECT_README;
             
-            if (Settings.DEBUG) System.out.println("(DEBUG) Opening " + path + "...");
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) Opening " + path + "...");
             Desktop.getDesktop().open(new File(path));
         } catch (Exception ex) {
             // It failed. Sending user to project website
-            if (Settings.DEBUG) System.out.println("(DEBUG) File " + path + " could not be opened");
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) File " + path + " could not be opened");
             visitWebsite();
         }
     }
     
     protected void visitWebsite() {
         try {
-            if (Settings.DEBUG) System.out.println("(DEBUG) Browsing to " + Settings.PROJECT_URL + "...");
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) Browsing to " + Settings.PROJECT_URL + "...");
             Desktop.getDesktop().browse(java.net.URI.create(Settings.PROJECT_URL));
         } catch (Exception ex) {
             // It failed. Nothing to be done.
-            if (Settings.DEBUG) System.out.println("(DEBUG) Browsing to " + Settings.PROJECT_URL + " FAILED");
+            if (Settings.isDEBUG()) System.out.println("(DEBUG) Browsing to " + Settings.PROJECT_URL + " FAILED");
         }
     }
     
@@ -861,7 +861,7 @@ public class ControllerDefault {
                     v.setMethod(NetSubtitle.Method.YouTubeSignature);
                     isr = v.readURL(lTracks.get(i).getTrackURL());
                 } catch (Exception ex1) {
-                    if (Settings.DEBUG) {
+                    if (Settings.isDEBUG()) {
                         System.out.println("(DEBUG) URL could not be read via Signature method...");
                         System.out.println(
                             String.format("(DEBUG) Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s, Exception message='%s'",
@@ -877,7 +877,7 @@ public class ControllerDefault {
                     if (lTracks.get(i).getType() == NetSubtitle.Tipus.YouTubeASRTrack)
                     {
                         // YouTube ASR cannot be retrieved by using Legacy method.
-                        if (Settings.DEBUG) {
+                        if (Settings.isDEBUG()) {
                             System.out.println("(DEBUG) YouTube ASR cannot be retrieved via Legacy method. Operation partially aborted.");
                             System.out.println(
                                 String.format("(DEBUG) Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s",
@@ -896,14 +896,14 @@ public class ControllerDefault {
                     {
                         // A YouTube track/target can be retrieved by using legacy method.
                         // However, GUI should not reach this point with a target
-                        if (Settings.DEBUG) System.out.println("(DEBUG) Switching to YouTube Legacy mode and retrying...");
+                        if (Settings.isDEBUG()) System.out.println("(DEBUG) Switching to YouTube Legacy mode and retrying...");
                         v.setMethod(NetSubtitle.Method.YouTubeLegacy);
 
                         try
                         {
                             isr = v.readURL(lTracks.get(i).getTrackURL(NetSubtitle.Method.YouTubeLegacy));
                         } catch (Exception ex2) {
-                            if (Settings.DEBUG) {
+                            if (Settings.isDEBUG()) {
                                 System.out.println("(DEBUG) URL could not be read with Legacy method. Operation partially aborted");
                                 System.out.println(
                                     String.format("(DEBUG) Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s, Exception message='%s'",
@@ -924,7 +924,7 @@ public class ControllerDefault {
                     {
                         // YouTube Target should not reach this point due to GUI.
                         // Google Track should not reach this point.
-                        if (Settings.DEBUG) System.out.println("(DEBUG) Entered wrong section of code. Unexpected result.");
+                        if (Settings.isDEBUG()) System.out.println("(DEBUG) Entered wrong section of code. Unexpected result.");
                         fewSubsSkipped = true;                        
 //                        if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
 //                        else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTracks.get(i).getLang() + "," + lTracks.get(i).getIdXML() + "]");
@@ -970,14 +970,14 @@ public class ControllerDefault {
                             lTracks.get(i).getType() == NetSubtitle.Tipus.YouTubeTrack)
                     {
                         // A YouTube track/target can be retrieved by using legacy method.
-                        if (Settings.DEBUG) System.out.println("(DEBUG) Switching to YouTube Legacy mode and retrying...");
+                        if (Settings.isDEBUG()) System.out.println("(DEBUG) Switching to YouTube Legacy mode and retrying...");
                         v.setMethod(NetSubtitle.Method.YouTubeLegacy);
 
                         try
                         {
                             isr = v.readURL(lTracks.get(i).getTrackURL(NetSubtitle.Method.YouTubeLegacy));
                         } catch (Exception ex1) {
-                            if (Settings.DEBUG) {
+                            if (Settings.isDEBUG()) {
                                 System.out.println("(DEBUG) URL could not be read with Legacy method. Operation partially aborted");
                                 System.out.println(
                                     String.format("(DEBUG) Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s, Exception message='%s'",
