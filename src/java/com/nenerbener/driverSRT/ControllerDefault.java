@@ -810,6 +810,8 @@ public class ControllerDefault {
             }
         });
         t1.start();
+        
+        //need to wait for t1 to end before parent thread can end or t1 will abort
         try {
 			t1.join();
 		} catch (InterruptedException e) {

@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.lang.System;
+import org.apache.commons.cli.Options;
 
 /**
  * Driver class that demonstrates the simplest non-gui implementation of Google2SRT developed by [reference]. 
@@ -29,12 +30,18 @@ public class DriverSRT {
 	 * 
 	 */
 	private static String SETTING_DEBUG_OPTION_STR = "setDebug";
+	private static String SETTING_INCLUDE_TITLE_OPTION_STR = "setIncludeTitle";
+	private static String SETTING_INCLUDE_TRACK_TITLE_OPTION_STR = "setIncludeTrackTitle";
+	private static String SET_REMOVE_TIMING_SUBTITLES_OPTION_STR = "setRemoveTimingSubtitles";
 
 	public static void main(String[] args) {
 
-		// debug option default
-		Boolean settingDebugOption = false;
 		// process commandline parameters
+		Boolean settingDebugOption = false; // debug option default
+		Boolean settingIncludeTitleOption = false; // include title option default
+		Boolean settingIncludeTrackTitleOption = false; // include track title option default
+		Boolean setRemoveTimingSubtitlesOption = true; // remove timing subtitles option default
+
 		// confirm 2 commandline options
 		if (args.length != 2) {
 			usage();
@@ -66,13 +73,34 @@ public class DriverSRT {
 		Settings appSettings = new Settings();
 		appSettings.loadSettings();
 
-		//Read debug property from cmdline, set if exists, default to false;
+		//Read properties from cmdline and set;
 		settingDebugOption = 
 				Boolean.parseBoolean(System.getProperty(SETTING_DEBUG_OPTION_STR));
 		if(settingDebugOption) {
 			appSettings.setDEBUG(true);
 		} else {
 			appSettings.setDEBUG(false);
+		}
+		settingIncludeTitleOption = 
+				Boolean.parseBoolean(System.getProperty(SETTING_INCLUDE_TITLE_OPTION_STR));
+		if(settingIncludeTitleOption) {
+			appSettings.setIncludeTitleInFilename(true);
+		} else {
+			appSettings.setIncludeTitleInFilename(false);
+		}
+		settingIncludeTrackTitleOption = 
+				Boolean.parseBoolean(System.getProperty(SETTING_INCLUDE_TRACK_TITLE_OPTION_STR));
+		if(settingIncludeTrackTitleOption) {
+			appSettings.setIncludeTrackNameInFilename(true);
+		} else {
+			appSettings.setIncludeTrackNameInFilename(false);
+		}
+		setRemoveTimingSubtitlesOption = 
+				Boolean.parseBoolean(System.getProperty(SET_REMOVE_TIMING_SUBTITLES_OPTION_STR));
+		if(setRemoveTimingSubtitlesOption) {
+			appSettings.setRemoveTimingSubtitles(true);
+		} else {
+			appSettings.setRemoveTimingSubtitles(false);
 		}
 
 		// set output directory and input URL
@@ -121,5 +149,19 @@ public class DriverSRT {
 	 */
 	public static void usage() {
 		System.out.println("java driverSRT [Output directory] [input URL]");
+	}
+	
+	/**
+	 * Common CLI implementation returns cmdline parameters
+	 */
+	public static void validateOptions(
+			String[] args,
+			Boolean settingDebugOption,
+			Boolean settingIncludeTitleOption,
+			Boolean settingIncludeTrackTitleOption,
+			Boolean setRemoveTimingSubtitlesOption) {
+		Options options = new Options();
+		
+		
 	}
 }

@@ -12,7 +12,6 @@
     <fileset dir="${build.lib}">
       <include name="*.jar" />
     </fileset>
-    <pathelement location="${build.conf}"/>
     <pathelement location="${build.resources}"/> 
   </path>
 
