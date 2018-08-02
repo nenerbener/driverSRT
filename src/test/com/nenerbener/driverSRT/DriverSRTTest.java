@@ -2,6 +2,10 @@ package com.nenerbener.driverSRT;
 import java.lang.reflect.Method;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.nio.file.LinkOption;
 
 /**
  * Junit test class for SRTDriver.class
@@ -12,20 +16,18 @@ import static org.junit.Assert.*;
 
 public class DriverSRTTest {
 	/** 
-	 * Test main() as an overall Junit program test
+	 * Test a Youtube video with closed caption successfully creates a file
 	 * 
 	 * @throws Exception 
 	 */
 	@Test
-	public void mainTest() throws Exception {
+	public void validURLWithClosedCaptionTest() throws Exception {
 
-		//test output directory and input youtube file
-//		String[] args = new String[] {
-//				"/home/mm/tmp",
-//				"https://www.youtube.com/watch?v=I8XXfgF9GSc"
-//		};
 		String inputFile = "https://www.youtube.com/watch?v=I8XXfgF9GSc";
-		String outputDir = "/home/mm/tmp";
+		String outputDir = "/tmp";
+		
+		Path outputPath = Paths.get(outputDir + "/I8XXfgF9GSc_0_en.srt");
+		if (Files.exists(outputPath, new LinkOption[] {LinkOption.NOFOLLOW_LINKS})) Files.delete(outputPath);
 
 		DriverSRT dsrt = new DriverSRT(
 			inputFile,
@@ -35,22 +37,38 @@ public class DriverSRTTest {
 			false,
 			true);
 	
-		//use reflection to call the static main method
-//		Class<?> clazz = DriverSRT.class;
-//		Class<?>[] argTypes = new Class<?>[] { String[].class };
-//		Method main = null;
-//		try {
-//			main = clazz.getDeclaredMethod("main", argTypes);
-//		} catch (NoSuchMethodException e) {
-//			e.printStackTrace();
-//		} catch (SecurityException e) {
-//			e.printStackTrace();
-//		}
-//		String[] mainArgs = args;
+		outputPath = Paths.get(outputDir + "/I8XXfgF9GSc_0_en.srt");
+//		outputPath = Paths.get(outputDir);
+		if (Files.exists(outputPath, new LinkOption[] {LinkOption.NOFOLLOW_LINKS})) assertTrue(true);
+		else assertTrue(false);
+	}
+	
+	/** 
+	 * Test a Youtube video with without closed caption does not create a file
+	 * 
+	 * @throws Exception 
+	 */
+	@Test
+	public void validURLWithoutClosedCaptionTest() throws Exception {
 
-		//invoke main class with commandline arguments
-//		main.invoke(null, (Object)mainArgs);
-		assertTrue(true); //passes if returns from main method successfully. Does not test results.
+		String inputFile = "https://www.youtube.com/watch?v=XOvlsrCv3Bk";
+		String outputDir = "/tmp";
+		
+		Path outputPath = Paths.get(outputDir + "/XOvlsrCv3Bk_0_en.srt");
+		if (Files.exists(outputPath, new LinkOption[] {LinkOption.NOFOLLOW_LINKS})) Files.delete(outputPath);
+
+		DriverSRT dsrt = new DriverSRT(
+			inputFile,
+			outputDir,
+			true,
+			false,
+			false,
+			true);
+	
+		outputPath = Paths.get(outputDir + "/XOvlsrCv3Bk_0_en.srt");
+//		outputPath = Paths.get(outputDir);
+		if (Files.exists(outputPath, new LinkOption[] {LinkOption.NOFOLLOW_LINKS})) assertTrue(false);
+		else assertTrue(true);
 	}
 	
 	@Test

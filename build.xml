@@ -155,7 +155,6 @@
 	<junit printsummary="yes" haltonfailure="no" fork="yes" forkmode="once">
 	  <classpath refid="testpath"/>
       <test name="com.nenerbener.driverSRT.DriverSRTTest" haltonfailure="no" outfile="testOut.log">
-		  <formatter type="plain"/>
 		  <formatter type="xml"/>
 		  </test>
     </junit>
