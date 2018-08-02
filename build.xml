@@ -6,6 +6,15 @@
   <!-- to contribute (without having to type -D or edit this file -->
   <property file="./default.properties" />
 
+  <!-- the buildpath -->
+  <path id="buildpath">
+    <fileset dir="${build.lib}">
+      <include name="*.jar" />
+    </fileset>
+    <pathelement location="${build.conf}"/>
+    <pathelement location="${build.resources}"/>
+  </path>
+
   <!-- the normal classpath -->
   <path id="classpath">
     <pathelement location="${build.classes}"/>
@@ -15,13 +24,24 @@
     <pathelement location="${build.resources}"/> 
   </path>
 
-  <!-- the buildpath -->
-  <path id="buildpath">
+  <!-- the Junit test buildpath -->
+  <path id="testbuildpath">
     <fileset dir="${build.lib}">
       <include name="*.jar" />
     </fileset>
+    <pathelement location="${build.classes}"/>
     <pathelement location="${build.conf}"/>
     <pathelement location="${build.resources}"/>
+  </path>
+
+  <!-- the test classpath -->
+  <path id="testpath">
+    <pathelement location="${build.classes}"/>
+    <pathelement location="${build.test.classes}"/>
+    <fileset dir="${build.lib}">
+      <include name="*.jar" />
+    </fileset>
+    <pathelement location="${build.resources}"/> 
   </path>
 
   <presetdef name="javac">
@@ -60,12 +80,13 @@
 		</copy>
 		<mkdir dir="${build.classes}"/>
 		<mkdir dir="${build.dir}/META-INF"/>
+		<mkdir dir="${build.test.classes}"/>
 	</target>
 
   <!-- ====================================================== -->
 	<!-- Compile the Java files to build/classes folder       -->
   <!-- ====================================================== -->
-  <target name="2-compile" description="--> compile Java files">
+  <target name="2a-compile" depends="1-init" description="--> compile Java files without Junit test">
     <javac
      encoding="${build.encoding}"
      srcdir="${src.dir}"
@@ -81,20 +102,30 @@
     </javac>
   </target>
 
-  <!-- ================================================================== -->
-  <!-- Make jar file                                                      -->
-  <!-- ================================================================== -->
-  <target name="jar" depends="2-compile" description="--> make driverSRT.jar">
-	  <jar jarfile="${final.name}.jar"
-			basedir="${build.dir}">
-    </jar>
+  <!-- ====================================================== -->
+	<!-- Compile the Java files to build/testclasses folder       -->
+  <!-- ====================================================== -->
+  <target name="2b-compile" depends="2a-compile" description="--> compile Java files with Junit test">
+    <javac
+     encoding="${build.encoding}"
+     srcdir="${test.dir}"
+		 includes="com/nenerbener/**/*.java"
+     destdir="${build.test.classes}"
+     debug="${javac.debug}"
+     optimize="${javac.optimize}"
+     target="${javac.version}"
+     source="${javac.version}"
+     deprecation="${javac.deprecation}">
+		 <compilerarg value="-Xlint:-path"/>
+		 <classpath refid="testbuildpath"/>
+    </javac>
   </target>
 
   <!-- ================================================================== -->
-	<!-- run a default testcase run.dir=[] run.url=[] defined		  	  -->
-	<!-- default.properties												  -->
+	<!-- run a default example using String[] args defined									-->
+	<!-- in default.properties	    																				-->
   <!-- ================================================================== -->
-	<target name="3a-run" depends="2-compile" description="--> run driverSRT.DriverSRT.class">
+	<target name="3a-run" depends="2a-compile" description="--> run driverSRT.DriverSRT.class">
 		<java classname="com.nenerbener.driverSRT.DriverSRT">
 			<arg value="${run.dir}"/>
 			<arg value="${run.url}"/> 
@@ -103,10 +134,10 @@
 	</target>
 
   <!-- ================================================================== -->
-	<!-- debug a default testcase run.dir=[] run.url=[] defined		  	  -->
-	<!-- default.properties												  -->
+	<!-- debug a default example using String[] args defined							  -->
+	<!-- in default.properties. Remember to use a debug client on port 5555	-->
   <!-- ================================================================== -->
-	<target name="3b-debug" depends="2-compile" description="--> run driverSRT.DriverSRT.class">
+	<target name="3b-debug" depends="2a-compile" description="--> run driverSRT.DriverSRT.class">
 		<java classname="com.nenerbener.driverSRT.DriverSRT" fork="yes" failonerror="false" maxmemory="2048m">
 			<jvmarg value="-Xdebug"/>
 			<jvmarg value="-Xnoagent"/>
@@ -116,5 +147,47 @@
 			<classpath refid="classpath"/>
 		</java>
 	</target>
+	
+  <!-- ================================================================== -->
+	<!-- junit test																										  	  -->
+  <!-- ================================================================== -->
+  <target name="4-test" depends="2b-compile" description="--> junit testing"> 
+	<junit printsummary="yes" haltonfailure="no" fork="yes" forkmode="once">
+	  <classpath refid="testpath"/>
+      <test name="com.nenerbener.driverSRT.DriverSRTTest" haltonfailure="no" outfile="testOut.log">
+		  <formatter type="plain"/>
+		  <formatter type="xml"/>
+		  </test>
+    </junit>
+  </target>
+
+  <!-- ================================================================== -->
+	<!-- debug junit test																										-->
+	<!-- Remember to use a debug client on port 5432												-->
+  <!-- ================================================================== -->
+  <target name="5-testdebug" depends="2b-compile" description="--> junit testing"> 
+	<junit printsummary="yes" haltonfailure="no" fork="yes" forkmode="once">
+		<jvmarg value="-Xdebug"/>
+		<jvmarg value="-Xnoagent"/>
+		<jvmarg value="-Xrunjdwp:transport=dt_socket,address=5432,server=y,suspend=y"/>
+	  <classpath refid="testpath"/>
+      <test name="com.nenerbener.driverSRT.DriverSRTTest" haltonfailure="no" outfile="testOut.log">
+		  <formatter type="xml"/>
+		  </test>
+    </junit>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Make jar file                                                      -->
+  <!-- ================================================================== -->
+  <target name="jar" depends="2a-compile" description="--> make driverSRT.jar">
+		<jar destfile = "${build.dir}/${final.name}.jar">
+			<fileset dir = "${base.dir}"
+				excludes = "${build.dir}/**/*.class ${build.dir}/** ${run.dir}/**/* testOut.log.xml"/>
+			<manifest>
+				<attribute name = "Main-Class" value = "com.nenerbener.driverSRT"/>
+			</manifest>
+    </jar>
+  </target>
 
 </project>

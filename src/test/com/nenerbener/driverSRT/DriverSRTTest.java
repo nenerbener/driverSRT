@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
  * @since 06/23/2018
  */
 
-public class SRTDriverTest {
+public class DriverSRTTest {
 	/** 
 	 * Test main() as an overall Junit program test
 	 * 
@@ -20,26 +20,36 @@ public class SRTDriverTest {
 	public void mainTest() throws Exception {
 
 		//test output directory and input youtube file
-		String[] args = new String[] {
-				"/home/mm/tmp",
-				"https://www.youtube.com/watch?v=I8XXfgF9GSc"
-		};
+//		String[] args = new String[] {
+//				"/home/mm/tmp",
+//				"https://www.youtube.com/watch?v=I8XXfgF9GSc"
+//		};
+		String inputFile = "https://www.youtube.com/watch?v=I8XXfgF9GSc";
+		String outputDir = "/home/mm/tmp";
 
+		DriverSRT dsrt = new DriverSRT(
+			inputFile,
+			outputDir,
+			true,
+			false,
+			false,
+			true);
+	
 		//use reflection to call the static main method
-		Class<?> clazz = SRTDriver.class;
-		Class<?>[] argTypes = new Class<?>[] { String[].class };
-		Method main = null;
-		try {
-			main = clazz.getDeclaredMethod("main", argTypes);
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		}
-		String[] mainArgs = args;
+//		Class<?> clazz = DriverSRT.class;
+//		Class<?>[] argTypes = new Class<?>[] { String[].class };
+//		Method main = null;
+//		try {
+//			main = clazz.getDeclaredMethod("main", argTypes);
+//		} catch (NoSuchMethodException e) {
+//			e.printStackTrace();
+//		} catch (SecurityException e) {
+//			e.printStackTrace();
+//		}
+//		String[] mainArgs = args;
 
 		//invoke main class with commandline arguments
-		main.invoke(null, (Object)mainArgs);
+//		main.invoke(null, (Object)mainArgs);
 		assertTrue(true); //passes if returns from main method successfully. Does not test results.
 	}
 	
@@ -47,7 +57,7 @@ public class SRTDriverTest {
 	public void urlExistsTest() {
 		String arg = 
 				"https://www.youtube.com/watch?v=I8XXfgF9GSc";
-		boolean exists = SRTDriver.URLexists(arg);
+		boolean exists = DriverSRT.URLexists(arg);
 		assertTrue(exists);
 	}
 

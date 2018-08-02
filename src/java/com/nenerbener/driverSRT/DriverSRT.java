@@ -34,6 +34,99 @@ public class DriverSRT {
 	private static String SETTING_INCLUDE_TRACK_TITLE_OPTION_STR = "setIncludeTrackTitle";
 	private static String SET_REMOVE_TIMING_SUBTITLES_OPTION_STR = "setRemoveTimingSubtitles";
 
+	Boolean settingDebugOption = false; // debug option default
+	Boolean settingIncludeTitleOption = false; // include title option default
+	Boolean settingIncludeTrackTitleOption = false; // include track title option default
+	Boolean setRemoveTimingSubtitlesOption = true; // remove timing subtitles option default
+
+	DriverSRT(
+			String inputFile,
+			String outputDir,
+			Boolean settingDebugOption,
+			Boolean settingIncludeTitleOption,
+			Boolean settingIncludeTrackTitleOption,
+			Boolean setRemoveTimingSubtitlesOption) {
+
+		// process commandline parameters
+//		this.settingDebugOption = settingDebugOption; // debug option default
+//		this.settingIncludeTitleOption = settingIncludeTitleOption; // include title option default
+//		this.settingIncludeTrackTitleOption = false; // include track title option default
+//		this.setRemoveTimingSubtitlesOption = true; // remove timing subtitles option default
+
+		// confirm input url exists
+		if (!URLexists(inputFile)) {
+			System.out.println("URL does not exist, exiting...");
+			return;
+		}
+
+		Settings appSettings = new Settings();
+//		appSettings.loadSettings();
+
+		// set output directory and input URL
+		appSettings.setURLInput(inputFile);
+		appSettings.setOutput(outputDir);
+		appSettings.setDEBUG(settingDebugOption);
+		appSettings.setIncludeTitleInFilename(settingIncludeTitleOption);
+		appSettings.setIncludeTrackNameInFilename(settingIncludeTrackTitleOption);
+		appSettings.setRemoveTimingSubtitles(setRemoveTimingSubtitlesOption);
+		appSettings.setLocaleLanguage("en");
+
+		ControllerDefault controller = new ControllerDefault(appSettings);
+
+		System.out.println("Input URL: " + inputFile);
+		if (!controller.processInputURL()) {
+			System.out.println("Method exited abnormally. URL has not attached closed caption track.");
+			return;
+		} 
+		if (!controller.convertSubtitlesTracks()) {
+			System.out.println("Method abnormally. Could not download closed caption data successfully.");
+			return;
+		}
+	}
+
+	/**
+	 * returns true if URLName exists.
+	 *
+	 * @param URLName The URL (Youtube video link) to check if exists on internet
+	 * @return true, if successful
+	 */
+	public static boolean URLexists(String URLName){
+		try {
+			HttpURLConnection.setFollowRedirects(false);
+			// note : you may also need
+			//        HttpURLConnection.setInstanceFollowRedirects(false)
+			HttpURLConnection con =
+				(HttpURLConnection) new URL(URLName).openConnection();
+			con.setRequestMethod("HEAD");
+			return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}  
+
+	/**
+	 * prints out to standard out the commandline usage. Does not exit() from program inside method.
+	 */
+	public static void usage() {
+		System.out.println("java driverSRT [Output directory] [input URL]");
+	}
+	
+	/**
+	 * Common CLI implementation returns cmdline parameters
+	 */
+//	public static void validateOptions(
+//			String[] args,
+//			Boolean settingDebugOption,
+//			Boolean settingIncludeTitleOption,
+//			Boolean settingIncludeTrackTitleOption,
+//			Boolean setRemoveTimingSubtitlesOption) {
+//		Options options = new Options();
+//		
+//		
+//	}
+
 	public static void main(String[] args) {
 
 		// process commandline parameters
@@ -62,7 +155,6 @@ public class DriverSRT {
 			System.exit(-1);
 		}
 
-
 		// confirm input url exists
 		if (!URLexists(args[1])) {
 			System.out.println("URL does not exist, exiting...");
@@ -71,7 +163,7 @@ public class DriverSRT {
 		}
 
 		Settings appSettings = new Settings();
-		appSettings.loadSettings();
+//		appSettings.loadSettings();
 
 		//Read properties from cmdline and set;
 		settingDebugOption = 
@@ -120,48 +212,5 @@ public class DriverSRT {
 		}
 		System.out.println("Program exited normally. Results are in " + args[0] + "/[youtube vid ref].srt");
 			System.exit(0);
-	}
-
-	/**
-	 * returns true if URLName exists.
-	 *
-	 * @param URLName The URL (Youtube video link) to check if exists on internet
-	 * @return true, if successful
-	 */
-	public static boolean URLexists(String URLName){
-		try {
-			HttpURLConnection.setFollowRedirects(false);
-			// note : you may also need
-			//        HttpURLConnection.setInstanceFollowRedirects(false)
-			HttpURLConnection con =
-				(HttpURLConnection) new URL(URLName).openConnection();
-			con.setRequestMethod("HEAD");
-			return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}  
-
-	/**
-	 * prints out to standard out the commandline usage. Does not exit() from program inside method.
-	 */
-	public static void usage() {
-		System.out.println("java driverSRT [Output directory] [input URL]");
-	}
-	
-	/**
-	 * Common CLI implementation returns cmdline parameters
-	 */
-	public static void validateOptions(
-			String[] args,
-			Boolean settingDebugOption,
-			Boolean settingIncludeTitleOption,
-			Boolean settingIncludeTrackTitleOption,
-			Boolean setRemoveTimingSubtitlesOption) {
-		Options options = new Options();
-		
-		
 	}
 }
