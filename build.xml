@@ -182,7 +182,8 @@
   <target name="jar" depends="2a-compile" description="--> make driverSRT.jar">
 		<jar destfile = "${build.dir}/${final.name}.jar">
 			<fileset dir = "${base.dir}"
-				excludes = "${build.dir}/**/*.class ${build.dir}/** ${run.dir}/**/* testOut.log.xml"/>
+				excludes = "${build.dir}/**/*.class ${build.dir}/** ${run.dir}/** testOut.log.xml"/>
+<!--				excludes = "${build.dir}/**/*.class ${build.dir}/** ${run.dir}/**/* testOut.log.xml"/> -->
 			<manifest>
 				<attribute name = "Main-Class" value = "com.nenerbener.driverSRT"/>
 			</manifest>
