@@ -12,7 +12,7 @@
       <include name="*.jar" />
     </fileset>
     <pathelement location="${build.conf}"/>
-    <pathelement location="${build.resources}"/>
+<!--    <pathelement location="${build.resources}"/> -->
   </path>
 
   <!-- the normal classpath -->
@@ -21,7 +21,7 @@
     <fileset dir="${build.lib}">
       <include name="*.jar" />
     </fileset>
-    <pathelement location="${build.resources}"/> 
+<!--    <pathelement location="${build.resources}"/> -->
   </path>
 
   <!-- the Junit test buildpath -->
@@ -31,7 +31,7 @@
     </fileset>
     <pathelement location="${build.classes}"/>
     <pathelement location="${build.conf}"/>
-    <pathelement location="${build.resources}"/>
+<!--    <pathelement location="${build.resources}"/> -->
   </path>
 
   <!-- the test classpath -->
@@ -41,7 +41,7 @@
     <fileset dir="${build.lib}">
       <include name="*.jar" />
     </fileset>
-    <pathelement location="${build.resources}"/> 
+<!--    <pathelement location="${build.resources}"/> -->
   </path>
 
   <presetdef name="javac">
@@ -77,16 +77,17 @@
 		<copy todir="${build.lib}" verbose="true">
 			<fileset dir="${lib.dir}" includes="*.*"/>
 		</copy>
+<!--
 		<mkdir dir="${build.resources}"/>
 		<copy todir="${build.resources}" verbose="true">
 			<fileset dir="${resources.dir}" includes="*.*"/>
 		</copy>
+-->
 		<mkdir dir="${build.classes}"/>
 		<copy file="${base.dir}/log4j.properties" 
 			todir="${build.classes}"
 			verbose="true"/>
 		<mkdir dir="${build.lib}"/>
-		<mkdir dir="${build.dir}/META-INF"/>
 		<mkdir dir="${build.test.classes}"/>
 	</target>
 
@@ -187,6 +188,7 @@
 
   <!-- ================================================================== -->
   <!-- Make jar file with included dependencies. Mainly for standalone    -->
+  <!-- applications. NO class files included. Run this target to create.  -->
   <!-- You can use ./driverSRT.sh urls/urls.txt for example run           -->
   <!-- ================================================================== -->
   <target name="6a-jar-with-dependencies" depends="2b-compile" description="--> make driverSRT.jar with dependencies">
@@ -202,11 +204,12 @@
   <!-- ================================================================== -->
   <!-- Make jar file without included dependencies. Mainly for library    -->
   <!-- use where many of the depenencies are included in the parent app.  -->
+  <!-- Class files included in jar.                                       -->
   <!-- A dependency jar is included that includes dependency jars         -->
   <!-- ================================================================== -->
   <target name="6b-jar-without-dependencies-and-separate-dependency-jar" depends="2b-compile" description="--> make driverSRT.jar without dependencies and separate dependency jar">
 		<jar destfile = "${build.dir}/${final.name}.without.dependencies.jar">
-			<fileset dir = "${base.dir}"
+			<fileset dir = "${build.classes}"
 				excludes = "${lib.dir}/** ${build.lib}/** ${run.dir}/** testOut.log.xml log4j.properties ${build.classes}/log4j.properties"/>
 			<manifest>
 				<attribute name = "Main-Class" value = "com.nenerbener.driverSRT"/>

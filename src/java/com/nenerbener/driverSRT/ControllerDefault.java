@@ -32,7 +32,7 @@ import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.MissingResourceException;
+//import java.util.MissingResourceException;
 //import java.util.ResourceBundle;
 //import org.jdom.input.JDOMParseException;
 import java.lang.invoke.MethodHandles;
@@ -823,15 +823,15 @@ public class ControllerDefault {
         
     }
 
-    public static java.util.ResourceBundle getBundle() {
-        java.util.ResourceBundle b;
-        try {
-            b = java.util.ResourceBundle.getBundle("Bundle");
-        } catch (MissingResourceException e) {
-            b = java.util.ResourceBundle.getBundle("Bundle", new java.util.Locale("en"));
-        }
-        return b;
-    }
+//    public static java.util.ResourceBundle getBundle() {
+//        java.util.ResourceBundle b;
+//        try {
+//            b = java.util.ResourceBundle.getBundle("Bundle");
+//        } catch (MissingResourceException e) {
+//            b = java.util.ResourceBundle.getBundle("Bundle", new java.util.Locale("en"));
+//        }
+//        return b;
+//    }
 
     // Downloads multiple tracks from the network and converts them to SRT
     protected void convertDefaultSubtitleTrack() {

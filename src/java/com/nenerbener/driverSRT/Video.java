@@ -348,8 +348,10 @@ public class Video {
             String appName, appVersion;
             URLConnection urlconn;
 
-            appName = java.util.ResourceBundle.getBundle("Bundle").getString("app.name");
-            appVersion = java.util.ResourceBundle.getBundle("Bundle").getString("app.version");
+//            appName = java.util.ResourceBundle.getBundle("Bundle").getString("app.name");
+//            appVersion = java.util.ResourceBundle.getBundle("Bundle").getString("app.version");
+            appName = "driverSRT";
+            appVersion = "0.01";
 
             url = new URL(s);
             if (proxy != null) {
