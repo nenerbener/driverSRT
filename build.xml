@@ -186,9 +186,10 @@
   </target>
 
   <!-- ================================================================== -->
-  <!-- Make jar file with included dependencies                           -->
+  <!-- Make jar file with included dependencies. Mainly for standalone    -->
+  <!-- You can use ./driverSRT.sh urls/urls.txt for example run           -->
   <!-- ================================================================== -->
-  <target name="6a-jar-with-dependencies" depends="2a-compile" description="--> make driverSRT.jar with dependencies">
+  <target name="6a-jar-with-dependencies" depends="2b-compile" description="--> make driverSRT.jar with dependencies">
 		<jar destfile = "${build.dir}/${final.name}.withdependencies.jar">
 			<fileset dir = "${base.dir}"
 				excludes = "${build.dir}/**/*.class ${build.dir}/** ${run.dir}/** testOut.log.xml"/>
@@ -199,12 +200,14 @@
   </target>
 
   <!-- ================================================================== -->
-  <!-- Make jar file without included dependencies                        -->
+  <!-- Make jar file without included dependencies. Mainly for library    -->
+  <!-- use where many of the depenencies are included in the parent app.  -->
+  <!-- A dependency jar is included that includes dependency jars         -->
   <!-- ================================================================== -->
-  <target name="6b-jar-without-dependencies-and-separate-dependency-jar" depends="2a-compile" description="--> make driverSRT.jar without dependencies and separate dependency jar">
+  <target name="6b-jar-without-dependencies-and-separate-dependency-jar" depends="2b-compile" description="--> make driverSRT.jar without dependencies and separate dependency jar">
 		<jar destfile = "${build.dir}/${final.name}.without.dependencies.jar">
 			<fileset dir = "${base.dir}"
-				excludes = "${build.dir}/**/*.class ${lib.dir} ${build.dir}/** ${run.dir}/** testOut.log.xml"/>
+				excludes = "${lib.dir}/** ${build.lib}/** ${run.dir}/** testOut.log.xml log4j.properties ${build.classes}/log4j.properties"/>
 			<manifest>
 				<attribute name = "Main-Class" value = "com.nenerbener.driverSRT"/>
 			</manifest>
