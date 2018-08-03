@@ -53,11 +53,15 @@
     <delete dir="${build.dir}"/>
   </target>
 
-	<target name="resolve" description="dependencies required by driverSRT">
-		<ivy:resolve file="${ivy.file}" conf="default"/>
-		<ivy:retrieve/> 
-<!--		<ivy:retrieve pattern="Libraries/[artifact]-[revision]-[type].[ext]" />  -->
-	</target>
+  <!-- ================================================================== -->
+  <!-- target: resolve all dependencies                                   -->
+  <!-- ================================================================== -->
+  <target name="resolve" description="--> resolve and retrieve dependencies with ivy">
+<!--    <ivy:resolve file="${ivy.file}" conf="default" log="download-only"/> 
+    <ivy:retrieve pattern="${build.lib.dir}/[artifact]-[revision].[ext]" symlink="false" log="quiet"/>i -->
+	<ivy:resolve file="${ivy.file}" conf="default"/> 
+	<ivy:retrieve/> 
+  </target>
 
 	<target name="1-init" depends="clean,resolve" description="--> create build directory, download dependencies and copy">
 		<mkdir dir="${build.dir}"/>
@@ -70,7 +74,6 @@
 		<copy file="${base.dir}/ivy.xml" 
 			todir="${build.dir}"
 			verbose="true"/>
-		<mkdir dir="${build.lib}"/>
 		<copy todir="${build.lib}" verbose="true">
 			<fileset dir="${lib.dir}" includes="*.*"/>
 		</copy>
@@ -79,6 +82,10 @@
 			<fileset dir="${resources.dir}" includes="*.*"/>
 		</copy>
 		<mkdir dir="${build.classes}"/>
+		<copy file="${base.dir}/log4j.properties" 
+			todir="${build.classes}"
+			verbose="true"/>
+		<mkdir dir="${build.lib}"/>
 		<mkdir dir="${build.dir}/META-INF"/>
 		<mkdir dir="${build.test.classes}"/>
 	</target>
@@ -127,6 +134,7 @@
   <!-- ================================================================== -->
 	<target name="3a-run" depends="2a-compile" description="--> run driverSRT.DriverSRT.class">
 		<java classname="com.nenerbener.driverSRT.DriverSRT">
+			<jvmarg value="-Dlog4j.debug=true"/>
 			<arg value="${run.dir}"/>
 			<arg value="${run.url}"/> 
 			<classpath refid="classpath"/>
@@ -139,12 +147,13 @@
   <!-- ================================================================== -->
 	<target name="3b-debug" depends="2a-compile" description="--> run driverSRT.DriverSRT.class">
 		<java classname="com.nenerbener.driverSRT.DriverSRT" fork="yes" failonerror="false" maxmemory="2048m">
+			<classpath refid="classpath"/>
+			<jvmarg value="-Dlog4j.debug=true"/>
 			<jvmarg value="-Xdebug"/>
 			<jvmarg value="-Xnoagent"/>
 			<jvmarg value="-Xrunjdwp:transport=dt_socket,address=5555,server=y,suspend=y"/>
 			<arg value="${run.dir}"/>
 			<arg value="${run.url}"/> 
-			<classpath refid="classpath"/>
 		</java>
 	</target>
 	
@@ -183,7 +192,6 @@
 		<jar destfile = "${build.dir}/${final.name}.jar">
 			<fileset dir = "${base.dir}"
 				excludes = "${build.dir}/**/*.class ${build.dir}/** ${run.dir}/** testOut.log.xml"/>
-<!--				excludes = "${build.dir}/**/*.class ${build.dir}/** ${run.dir}/**/* testOut.log.xml"/> -->
 			<manifest>
 				<attribute name = "Main-Class" value = "com.nenerbener.driverSRT"/>
 			</manifest>

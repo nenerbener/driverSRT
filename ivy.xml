@@ -10,7 +10,10 @@
 				<!-- https://mvnrepository.com/artifact/jdom/jdom -->
 				<dependency org="jdom" name="jdom" rev="1.0" conf="*->*,!sources,!javadoc"/>
 				<!-- https://mvnrepository.com/artifact/commons-cli/commons-cli -->
+				<dependency org="log4j" name="log4j" rev="1.2.16" conf="*->*,!sources,!javadoc"/>
 				<dependency org="commons-cli" name="commons-cli" rev="1.4" conf="*->*,!sources,!javadoc"/>
+				<dependency org="org.slf4j" name="slf4j-api" rev="1.6.4" />
+				<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.4" />
 		</dependencies>
 </ivy-module>
 

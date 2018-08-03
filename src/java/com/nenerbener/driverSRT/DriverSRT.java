@@ -7,8 +7,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.lang.System;
-import org.apache.commons.cli.Options;
-
+//import org.apache.commons.cli.Options;
+import java.lang.invoke.MethodHandles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * Driver class that demonstrates the simplest non-gui implementation of Google2SRT developed by [reference]. 
  * Note that this class was written to be called using ./build.xml "ant run" with the input args automatically
@@ -19,6 +21,9 @@ import org.apache.commons.cli.Options;
  */
 public class DriverSRT {
 	
+  private static final Logger LOG = LoggerFactory
+      .getLogger(MethodHandles.lookup().lookupClass());
+
 	/**
 	 * Commandline execution -
 	 * java com.nenerbener.driverSRT.DriverSRT -cp ./build/classes:./build/lib/*.jar:./build/resources output-directory input youtube-URL
@@ -55,7 +60,7 @@ public class DriverSRT {
 
 		// confirm input url exists
 		if (!URLexists(inputFile)) {
-			System.out.println("URL does not exist, exiting...");
+			LOG.info("URL does not exist, returning from method. " + inputFile);
 			return;
 		}
 
@@ -72,14 +77,15 @@ public class DriverSRT {
 		appSettings.setLocaleLanguage("en");
 
 		ControllerDefault controller = new ControllerDefault(appSettings);
+		LOG.info("youtube CC download controller initiated...");
 
-		System.out.println("Input URL: " + inputFile);
+		LOG.info("Input URL: " + inputFile);
 		if (!controller.processInputURL()) {
-			System.out.println("Method exited abnormally. URL has not attached closed caption track.");
+			LOG.info("Method exited abnormally. URL has not attached closed caption track.");
 			return;
 		} 
 		if (!controller.convertSubtitlesTracks()) {
-			System.out.println("Method abnormally. Could not download closed caption data successfully.");
+			LOG.info("Method abnormally. Could not download closed caption data successfully.");
 			return;
 		}
 	}
@@ -147,23 +153,22 @@ public class DriverSRT {
 			Files.createDirectory(path);
 		} catch(FileAlreadyExistsException e){
 			// the directory already exists.
-			System.out.println("Output directory exists:" + args[0]);
+			LOG.info("Output directory exists:" + args[0]);
 		} catch (IOException e) {
 			//something else went wrong
-			System.out.println("Output directory problem, exiting...");
+			LOG.error("Output directory problem, exiting...");
 			usage();
 			System.exit(-1);
 		}
 
 		// confirm input url exists
 		if (!URLexists(args[1])) {
-			System.out.println("URL does not exist, exiting...");
+			LOG.error("URL does not exist, exiting...");
 			usage();
 			System.exit(-1);
 		}
 
 		Settings appSettings = new Settings();
-//		appSettings.loadSettings();
 
 		//Read properties from cmdline and set;
 		settingDebugOption = 
@@ -200,17 +205,18 @@ public class DriverSRT {
 		appSettings.setURLInput(args[1]);
 
 		ControllerDefault controller = new ControllerDefault(appSettings);
+		LOG.info("youtube CC download controller initiated...");
 
-		System.out.println("Input URL: " + args[1]);
+		LOG.info("Input URL: " + args[1]);
 		if (!controller.processInputURL()) {
-			System.out.println("Program exited abnormally. URL has not attached closed caption track.");
+			LOG.error("Program exited abnormally. URL has not attached closed caption track.");
 			System.exit(-1);
 		} 
 		if (!controller.convertSubtitlesTracks()) {
-			System.out.println("Program exited abnormally. Could not download closed caption data successfully.");
+			LOG.error("Program exited abnormally. Could not download closed caption data successfully.");
 			System.exit(-1);
 		}
-		System.out.println("Program exited normally. Results are in " + args[0] + "/[youtube vid ref].srt");
+		LOG.info("Program exited normally. Results are in " + args[0] + "/[youtube vid ref].srt");
 			System.exit(0);
 	}
 }
