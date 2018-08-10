@@ -229,7 +229,7 @@ public class DriverSRT {
 			//                gui.setMsgIOException();
 			//                return false;
 		}
-		return sb.toString(); // ok!
+		return sb.toString().replaceAll("\\<.*?>","").replaceAll("\\\r\\\n"," "); // ok!
 	}
     
     private String tsrt(String duration) { // returns duration in SRT format
