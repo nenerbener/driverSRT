@@ -39,16 +39,18 @@ public class ConverterDefault {
     private InputStreamReader isrInput;
     private double increment;
     private boolean removeTiming;
-//    private GUI gui;
-//    private static SAXBuilder parser = new SAXBuilder();
+//    private GUI gui;increment;
+//    private boolean removeTiming;
+//  private GUI gui;
+//  private static SAXBuilder parser = new SAXBuilder();
     SAXBuilder parser = new SAXBuilder();
-    
+
     private Document gSub = null; // this is read CC Dom Document
 
     public Document getGSub() {
     	return gSub;
     }
-    
+  
     public ConverterDefault(InputStreamReader isrInput, String strOutput, double increment, boolean removeTiming) {
         this.isrInput = isrInput;
         this.strOutput = strOutput;
