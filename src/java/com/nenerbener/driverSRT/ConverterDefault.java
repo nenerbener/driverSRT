@@ -40,7 +40,14 @@ public class ConverterDefault {
     private double increment;
     private boolean removeTiming;
 //    private GUI gui;
-    private static SAXBuilder parser = new SAXBuilder();
+//    private static SAXBuilder parser = new SAXBuilder();
+    SAXBuilder parser = new SAXBuilder();
+    
+    private Document gSub = null; // this is read CC Dom Document
+
+    public Document getGSub() {
+    	return gSub;
+    }
     
     public ConverterDefault(InputStreamReader isrInput, String strOutput, double increment, boolean removeTiming) {
         this.isrInput = isrInput;
@@ -86,7 +93,7 @@ public class ConverterDefault {
         saux = Double.toString(dd);
         
         switch (saux.length()) {
-            case 3: // 0.x
+            case 3: // 0.Dx
                 resultat += saux.substring(2, 3) + "00";
                 break;
             case 4: // 0.xx
@@ -106,7 +113,7 @@ public class ConverterDefault {
     
     private boolean start() {
         int i, tam;
-        Document gSub;
+//        Document gSub;
         try {
             gSub = parser.build(isrInput);
         } catch (JDOMException ex) {
@@ -199,7 +206,8 @@ public class ConverterDefault {
     }
 
     
-    public static boolean isXML(InputStreamReader isr) {
+//    public static boolean isXML(InputStreamReader isr) {
+    public boolean isXML(InputStreamReader isr) {
         
         try {
             parser.build(isr);

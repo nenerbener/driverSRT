@@ -38,6 +38,7 @@ import java.util.List;
 import java.lang.invoke.MethodHandles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jdom.Document;
 
 public class ControllerDefault {
 	private static final Logger LOG = LoggerFactory
@@ -48,6 +49,10 @@ public class ControllerDefault {
     private Settings appSettings; 	// Application settings
 //    private GUI gui;                                        // GUI
     private List<List<NetSubtitle>> lSubsWithTranslations;  // Tracks (item 0) + Targets (item 1)
+
+    ConverterDefault conv;
+
+    Document doc = null;
 
     protected void addTracks(List<NetSubtitle> subtitles) {
         lSubsWithTranslations.get(0).addAll(subtitles);
@@ -63,6 +68,11 @@ public class ControllerDefault {
     
     protected List<NetSubtitle> getTargets() {
         return lSubsWithTranslations.get(1);
+    }
+    
+    public Document getDoc() {
+    	doc = conv.getGSub();
+    	return doc;
     }
     
 //    protected GUI getGUI() {
@@ -137,7 +147,7 @@ public class ControllerDefault {
         }
 
         videoCount = 0;
-       // Check if URL is valid
+       // Check if URL is valid//
         for (Video v : this.videos) {
             try {
 //                gui.appStatusConnecting(++videoCount, videoTotalCount);
@@ -148,7 +158,7 @@ public class ControllerDefault {
 //                gui.appStatusClear();
             } catch (Video.HostNoGV e) {
 //                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.url.unknown.host");
-//                else gui.appLogsBundleMessage("msg.url.unknown.host", v.getURL());
+//                else gui.appLogsBundleMessage("msg.url.unknowndoc = conv.getGSub();.host", v.getURL());
                 invalidVideos.add(v);
                 continue;
             } catch (Video.NoDocId e) {
@@ -202,7 +212,7 @@ public class ControllerDefault {
                 invalidVideos.add(v);
                 continue;
             } catch (Exception e) {
-//                if (videoTotalCount == 1) gui.appErrorBundleMessage("msg.unknown.error");
+//                if (videoTotalCount == 1) gui.appErrorBundl//		doc =eMessage("msg.unknown.error");
 //                else gui.appLogsBundleMessage("msg.url.parameter.not.found", v.getURL());
                 invalidVideos.add(v);
                 continue;
@@ -223,7 +233,7 @@ public class ControllerDefault {
     // Converts an XML file to SRT
     protected void convertSubtitlesXML() {
         String fileName;
-        ConverterDefault conv;
+//        ConverterDefault conv;
         InputStreamReader isr = null;
        
         try {
@@ -250,7 +260,7 @@ public class ControllerDefault {
     
     // Downloads multiple tracks from the network and converts them to SRT
     protected boolean convertSubtitlesTracks() {
-        ConverterDefault conv;
+//        ConverterDefault conv;
         Video v;
 
         Object dataTracks[][];
@@ -446,7 +456,7 @@ public class ControllerDefault {
 
     // Downloads multiple targets (translated tracks) from the network and converts them to SRT
     protected void convertSubtitlesTargets() {
-        ConverterDefault conv;
+//        ConverterDefault conv;
         Video v;
         
         Object dataTracks[][], dataTargets[][];
@@ -490,7 +500,18 @@ public class ControllerDefault {
                             if (Settings.isDEBUG()) {
                                 LOG.warn("YouTube ASR cannot be retrieved via Legacy method. Operation completely aborted.");
                                 LOG.warn(
-                                    String.format("Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s",
+                                    String.format("Method=%s, Ty	class ProcessInputURLException extends Exception {\n" + 
+                                    		"		//parameterless constructor\n" + 
+                                    		"		ProcessInputURLException() {}\n" + 
+                                    		"		\n" + 
+                                    		"		// Constructor that accepts a message\n" + 
+                                    		"		public ProcessInputURLException(String message)\n" + 
+                                    		"		{\n" + 
+                                    		"			super(message);\n" + 
+                                    		"		}\n" + 
+                                    		"	}\n" + 
+                                    		"	\n" + 
+                                    		"pe=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s",
                                         v.getMethod(),
                                         srcLang.getType(),
                                         srcLang.getId(),
@@ -560,7 +581,18 @@ public class ControllerDefault {
                                     if (Settings.isDEBUG()) {
                                         LOG.warn("URL could not be read with legacy method. Operation partially aborted");
                                         LOG.warn(
-                                            String.format("[TARGET] Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s, Exception message='%s'",
+                                            String.format("[TARG	class ProcessInputURLException extends Exception {\n" + 
+                                            		"		//parameterless constructor\n" + 
+                                            		"		ProcessInputURLException() {}\n" + 
+                                            		"		\n" + 
+                                            		"		// Constructor that accepts a message\n" + 
+                                            		"		public ProcessInputURLException(String message)\n" + 
+                                            		"		{\n" + 
+                                            		"			super(message);\n" + 
+                                            		"		}\n" + 
+                                            		"	}\n" + 
+                                            		"	\n" + 
+                                            		"ET] Method=%s, Type=%s, ID=%s, IDXML=%s, Lang=%s, Name=%s, Exception message='%s'",
                                                 v.getMethod(),
                                                 lTargets.get(j).getType(),
                                                 lTargets.get(j).getId(),
@@ -583,7 +615,18 @@ public class ControllerDefault {
 //                                if (selectedCountTotalSubtitles == 1) gui.appErrorBundleMessage("msg.io.cc.unreadable");
 //                                else gui.appLogsBundleMessage("msg.io.cc.unreadable", "[" + v.getId() + "," + lTargets.get(j).getLang() + "," + lTargets.get(j).getIdXML() + "]");
                                 continue;
-                            }
+                            }	class ProcessInputURLException extends Exception {
+                        		//parameterless constructor
+                        		ProcessInputURLException() {}
+                        		
+                        		// Constructor that accepts a message
+                        		public ProcessInputURLException(String message)
+                        		{
+                        			super(message);
+                        		}
+                        	}
+                        	
+
                         }
 
                         fileName = "";
@@ -598,7 +641,18 @@ public class ControllerDefault {
 
                         s = lTargets.get(j).getLang();
                         if (s != null)
-                            fileName += "_" + s;
+                            fileName += "_" + s;	class ProcessInputURLException extends Exception {
+                        		//parameterless constructor
+                        		ProcessInputURLException() {}
+                        		
+                        		// Constructor that accepts a message
+                        		public ProcessInputURLException(String message)
+                        		{
+                        			super(message);
+                        		}
+                        	}
+                        	
+
 
 
                         fileName += "_" + srcLang.getIdXML();

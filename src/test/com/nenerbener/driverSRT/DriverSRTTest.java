@@ -71,12 +71,12 @@ public class DriverSRTTest {
 		else assertTrue(true);
 	}
 	
-	@Test
-	public void urlExistsTest() {
-		String arg = 
-				"https://www.youtube.com/watch?v=I8XXfgF9GSc";
-		boolean exists = DriverSRT.URLexists(arg);
-		assertTrue(exists);
-	}
+//	@Test
+//	public void urlExistsTest() {
+//		String arg = 
+//				"https://www.youtube.com/watch?v=I8XXfgF9GSc";
+//		boolean exists = DriverSRT.URLexists(arg);
+//		assertTrue(exists);
+//	}
 
 }

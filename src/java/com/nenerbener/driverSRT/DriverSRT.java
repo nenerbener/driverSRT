@@ -11,13 +11,14 @@ import java.lang.System;
 import java.lang.invoke.MethodHandles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jdom.Document;
 /**
  * Driver class that demonstrates the simplest non-gui implementation of Google2SRT developed by [reference]. 
  * Note that this class was written to be called using ./build.xml "ant run" with the input args automatically
  * loaded from default.properties file, but can be run from commandline as below. It only reads and processes 1 video file.
  *
  * @author Marc McEachern
- * @version Driver 0.01
+ * @version Driver 0.01C
  */
 public class DriverSRT {
 	
@@ -30,7 +31,7 @@ public class DriverSRT {
 	 * 
 	 * @param args 
 	 * <li>arg[0] is the output directory (does not need to be created a priori)
-	 * <li>arg[1] is the input URL (e.g., https://www.youtube.com/watch?v=hyttxEhAR2k)
+	 * <li>arg[1] is the inputC URL (e.g., https://www.youtube.com/watch?v=hyttxEhAR2k)
 	 * <li>Output is a directory (arg[0], created or existing) with an extracted closed caption from arg[1] video.
 	 * 
 	 */
@@ -44,7 +45,16 @@ public class DriverSRT {
 	Boolean settingIncludeTrackTitleOption = false; // include track title option default
 	Boolean setRemoveTimingSubtitlesOption = true; // remove timing subtitles option default
 
-	DriverSRT(
+	String inputFile; // global class version of inputFile
+	String outputDir; // global class version of outputDir
+			
+	//appSetting is analogous to Nutch Configuration class
+	Settings appSettings;
+	ControllerDefault controller;
+
+	public Document doc = null; //downloaded DOM CC document
+
+	public DriverSRT(
 			String inputFile,
 			String outputDir,
 			Boolean settingDebugOption,
@@ -54,7 +64,7 @@ public class DriverSRT {
 
 		// process commandline parameters
 //		this.settingDebugOption = settingDebugOption; // debug option default
-//		this.settingIncludeTitleOption = settingIncludeTitleOption; // include title option default
+//		this.settingIncludeTitCleOption = settingIncludeTitleOption; // include title option default
 //		this.settingIncludeTrackTitleOption = false; // include track title option default
 //		this.setRemoveTimingSubtitlesOption = true; // remove timing subtitles option default
 
@@ -64,7 +74,7 @@ public class DriverSRT {
 			return;
 		}
 
-		Settings appSettings = new Settings();
+		appSettings = new Settings();
 //		appSettings.loadSettings();
 
 		// set output directory and input URL
@@ -76,27 +86,77 @@ public class DriverSRT {
 		appSettings.setRemoveTimingSubtitles(setRemoveTimingSubtitlesOption);
 		appSettings.setLocaleLanguage("en");
 
-		ControllerDefault controller = new ControllerDefault(appSettings);
+		this.inputFile = inputFile;
+		this.outputDir = outputDir;
+
+//		controller = new ControllerDefault(appSettings);
+//		LOG.info("youtube CC download controller initiated...");
+//
+//		LOG.info("Input URL: " + inputFile);
+//		if (!controller.processInputURL()) {
+//			LOG.info("Method exited abnormally. URL has not attached closed caption track.");
+//			return;
+//		} 
+//		if (!controller.convertSubtitlesTracks()) {
+//			LOG.info("Method abnormally. Could not download closed caption data successfully.");
+//			return;
+//		}
+	}
+
+//	class ProcessInputURLException extends Exception {
+//		//parameterless constructor
+//		ProcessInputURLException() {}
+//		
+//		// Constructor that accepts a message
+//		public ProcessInputURLException(String message)
+//		{
+//			super(message);
+//		}
+//	}
+//	
+//	class ConvertSubtitlesTracksException extends Exception {
+//		//parameterless constructor
+//		ConvertSubtitlesTracksException() {}
+//		
+//		// Constructor that accepts a message
+//		public ConvertSubtitlesTracksException(String message)
+//		{
+//			super(message);
+//		}
+//	}
+	
+//	public Document retrieveSRT() throws ProcessInputURLException, ConvertSubtitlesTracksException
+	public Document retrieveSRT()
+	{
+		controller = new ControllerDefault(appSettings);
 		LOG.info("youtube CC download controller initiated...");
 
 		LOG.info("Input URL: " + inputFile);
+		
 		if (!controller.processInputURL()) {
 			LOG.info("Method exited abnormally. URL has not attached closed caption track.");
-			return;
+			return doc;
+//			ProcessInputURLException e = new ProcessInputURLException();
+//			throw e;
 		} 
 		if (!controller.convertSubtitlesTracks()) {
 			LOG.info("Method abnormally. Could not download closed caption data successfully.");
-			return;
+			return doc;
+//			ConvertSubtitlesTracksException e = new ConvertSubtitlesTracksException();
+//			throw e;
 		}
+		doc = controller.getDoc();
+		return doc;
 	}
-
+	
 	/**
 	 * returns true if URLName exists.
 	 *
 	 * @param URLName The URL (Youtube video link) to check if exists on internet
 	 * @return true, if successful
 	 */
-	public static boolean URLexists(String URLName){
+//	public static boolean URLexists(String URLName){
+	public boolean URLexists(String URLName){
 		try {
 			HttpURLConnection.setFollowRedirects(false);
 			// note : you may also need
@@ -162,11 +222,11 @@ public class DriverSRT {
 		}
 
 		// confirm input url exists
-		if (!URLexists(args[1])) {
-			LOG.error("URL does not exist, exiting...");
-			usage();
-			System.exit(-1);
-		}
+//		if (!URLexists(args[1])) {
+//			LOG.error("URL does not exist, exiting...");
+//			usage();
+//			System.exit(-1);
+//		}
 
 		Settings appSettings = new Settings();
 
